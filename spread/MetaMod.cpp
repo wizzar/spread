@@ -8,7 +8,7 @@ plugin_info_t Plugin_info =
 	"0.0.1",
 	__DATE__,
 	"SmileY",
-	"https://github.com/SmileYzn/spreadcontrol",
+	"https://github.com/SmileYzn/spread",
 	"SPREAD",
 	PT_STARTUP,
 	PT_ANYTIME,
@@ -98,11 +98,18 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS *pFunctionTable, int *interface
 {
 	memset(&g_DLL_FunctionTable_Post, 0, sizeof(DLL_FUNCTIONS));
 
-	// Funtion hooks here
+	g_DLL_FunctionTable_Post.pfnServerActivate = DLL_POST_ServerActivate;
 
 	memcpy(pFunctionTable, &g_DLL_FunctionTable_Post, sizeof(DLL_FUNCTIONS));
 
 	return 1;
+}
+
+void DLL_POST_ServerActivate(edict_t *pEdictList, int edictCount, int clientMax)
+{
+	gSpread.ServerActivate();
+
+	RETURN_META(MRES_IGNORED);
 }
 #pragma endregion
 

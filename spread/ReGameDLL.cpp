@@ -40,6 +40,8 @@ bool ReGameDLL_Init()
 									if (g_ReGameHookchains)
 									{
 										g_ReGameHookchains->InstallGameRules()->registerHook(ReGameDLL_InstallGameRules);
+
+										g_ReGameHookchains->CBaseEntity_FireBullets3()->registerHook(ReGameDLL_CBaseEntity_FireBullets3);
 									}
 
 									gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] ReGameDLL API Loaded: %d.%d", Plugin_info.logtag, REGAMEDLL_API_VERSION_MAJOR, REGAMEDLL_API_VERSION_MINOR);
@@ -64,6 +66,8 @@ bool ReGameDLL_Stop()
 	if (g_ReGameHookchains)
 	{
 		g_ReGameHookchains->InstallGameRules()->unregisterHook(ReGameDLL_InstallGameRules);
+
+		g_ReGameHookchains->CBaseEntity_FireBullets3()->unregisterHook(ReGameDLL_CBaseEntity_FireBullets3);
 	}
 
 	return true;
@@ -79,4 +83,11 @@ CGameRules *ReGameDLL_InstallGameRules(IReGameHook_InstallGameRules *chain)
 	}
 
 	return Result;
+}
+
+Vector &ReGameDLL_CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3 *chain, CBaseEntity *pEntity, Vector &vecSrc, Vector &vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t *pevAttacker, bool bPistol, int shared_rand)
+{
+	vecSpread = gSpread.CalcSpread(pEntity, vecSpread);
+
+	return chain->callNext(pEntity, vecSrc, vecDirShooting, vecSpread, flDistance, iPenetration, iBulletType, iDamage, flRangeModifier, pevAttacker, bPistol, shared_rand);
 }
