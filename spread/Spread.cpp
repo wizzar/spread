@@ -6,7 +6,7 @@ void CSpread::ServerActivate()
 {
     this->m_Weapon.clear();
 
-    g_engfuncs.pfnAddServerCommand(strdup("spread_weapon_set"), this->SetWeapon);
+    g_engfuncs.pfnAddServerCommand(strdup("spread_wpn"), this->SetWeapon);
 
     g_engfuncs.pfnServerCommand(strdup("exec addons/spread/spread.cfg\n"));
 }
