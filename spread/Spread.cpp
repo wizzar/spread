@@ -13,13 +13,23 @@ void CSpread::ServerActivate()
 
 void CSpread::SetWeapon()
 {
-    if (CMD_ARGC() >= 7)
+    if (g_engfuncs.pfnCmd_Argc() >= 7)
     {
-        auto Slot = g_ReGameApi->GetWeaponSlot(CMD_ARGV(1));
+        std::string WeaponName = g_engfuncs.pfnCmd_Argv(1);
 
-        if (Slot)
+        if (WeaponName.find("weapon_") == std::string::npos)
         {
-            gSpread.AddWeapon(Slot->id, std::stof(CMD_ARGV(2)), std::stof(CMD_ARGV(3)), std::stof(CMD_ARGV(4)), std::stof(CMD_ARGV(5)), std::stof(CMD_ARGV(6)));
+            WeaponName = "weapon_" + WeaponName;
+        }
+
+        if (!WeaponName.empty())
+        {
+            auto Slot = g_ReGameApi->GetWeaponSlot(WeaponName.c_str());
+
+            if (Slot)
+            {
+                gSpread.AddWeapon(Slot->id, std::stof(g_engfuncs.pfnCmd_Argv(2)), std::stof(g_engfuncs.pfnCmd_Argv(3)), std::stof(g_engfuncs.pfnCmd_Argv(4)), std::stof(g_engfuncs.pfnCmd_Argv(5)), std::stof(g_engfuncs.pfnCmd_Argv(6)));
+            }
         }  
     }
     else
