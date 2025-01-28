@@ -47,5 +47,5 @@
 #include "ReAPI.h"
 #include "ReGameDLL.h"
 
-// Stub
-#include "Stub.h"
+// Spread Control
+#include "Spread.h"

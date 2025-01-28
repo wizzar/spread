@@ -50,7 +50,7 @@ jobs:
       env:
         SCRIPT: |
           # Open makefile directory
-          cd /desktop/stub
+          cd /desktop/spread
 
           # Make Release Directory
           mkdir -p Release
@@ -59,10 +59,10 @@ jobs:
           make
 
           # Make dlls path
-          mkdir -p ../cstrike/addons/stub/dlls
+          mkdir -p ../cstrike/addons/spread/dlls
 
           # Copy release file
-          cp ./Release/stub_mm.so ../cstrike/addons/stub/dlls
+          cp ./Release/spread_mm.so ../cstrike/addons/spread/dlls
 
       run: docker exec build-container bash -c "$SCRIPT"
 
@@ -86,22 +86,22 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         # Open directory
-        cd Stub
+        cd spread
 
         # Make Release directory
         mkdir Release
 
         # Execute Build
-        msbuild Stub.vcxproj -property:configuration=Release -nologo -verbosity:minimal
+        msbuild Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
 
         # Make publish directory
-        mkdir publish\addons\stub\dlls
+        mkdir publish\addons\spread\dlls
 
         # Copy cstrike files to publish
         copy ..\cstrike\* publish -Recurse -Force
 
         # Move released dll to publish
-        copy Release\*.dll publish\addons\stub\dlls -Recurse -Force
+        copy Release\*.dll publish\addons\spread\dlls -Recurse -Force
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
