@@ -24,15 +24,15 @@ void CSpread::SetWeapon()
     }
     else
     {
-        gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Usage: %s <weapon_name> <on_air> <velocity> <moving> <ducking> <default>", Plugin_info.logtag, g_engfuncs.pfnCmd_Argv(0));
+        gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Usage: %s <weapon_name> <on_air> <speed> <moving> <ducking> <default>", Plugin_info.logtag, g_engfuncs.pfnCmd_Argv(0));
     }
 }
 
-void CSpread::AddWeapon(int WeaponIndex, float OnAir, float Velocity, float Moving, float Ducking, float Default)
+void CSpread::AddWeapon(int WeaponIndex, float OnAir, float Speed, float Moving, float Ducking, float Default)
 {
     this->m_Weapon[WeaponIndex].OnAir = OnAir;
 
-    this->m_Weapon[WeaponIndex].Velocity = Velocity;
+    this->m_Weapon[WeaponIndex].Speed = Speed;
     
     this->m_Weapon[WeaponIndex].Moving = Moving;
 
@@ -62,7 +62,7 @@ float CSpread::CalcSpread(CBaseEntity *pEntity, float vecSpread)
                             vecSpread = (vecSpread * Control.OnAir);
                         }
                     }
-                    else if (pEntity->pev->velocity.Length2D() > Control.Velocity)
+                    else if (pEntity->pev->velocity.Length2D() > Control.Speed)
                     {
                         if (Control.Moving >= 0.0f)
                         {
