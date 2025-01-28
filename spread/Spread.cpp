@@ -13,7 +13,7 @@ void CSpread::ServerActivate()
 
 void CSpread::SetWeapon()
 {
-    if (CMD_ARGC() >= 6)
+    if (CMD_ARGC() >= 7)
     {
         auto Slot = g_ReGameApi->GetWeaponSlot(CMD_ARGV(1));
 
