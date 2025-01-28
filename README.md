@@ -16,7 +16,8 @@
 
 <p align="center">The plugin optimizes shot spread.</p>
 <p align="center">It does not affect recoil, nor does it change the default behavior of aim, it just adjusts the insane pattern of shots in the game.</p>
-<p align="center">You can use this plugin as replacement for my <a href="https://github.com/smileYzn/accuracyfix" target="_blank">Accuracy Fix Plugin</a>. Since it is more optmized than accuracy fix plugin.</p>
+<p align="center">You can use this plugin as replacement for my <a href="https://github.com/smileYzn/accuracyfix" target="_blank">Accuracy Fix Plugin</a>.</p>
+<p>Since it is more optmized than accuracy fix plugin.</p>
 
 <hr>
 
