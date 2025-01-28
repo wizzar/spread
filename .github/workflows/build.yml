@@ -83,7 +83,7 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     - name: Execute Build
-      working-directory: ${{github.workspace}}
+      working-directory: .
       run: |
         # Open directory
         cd spread
