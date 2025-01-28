@@ -88,27 +88,17 @@ jobs:
         # Open directory
         cd spread
 
-        ls
-
         # Make Release directory
         mkdir -p Release
-
-        ls
 
         # Execute Build
         msbuild Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
 
-        ls
-
         # Make publish directory
         mkdir -p ..\cstrike\addons\spread\dlls
 
-        ls
-
         # Copy cstrike files to publish
         copy ..\cstrike\* publish -Recurse -Force
-
-        ls
 
         # Move released dll to publish
         copy Release\*.dll ..\cstrike\addons\spread\dlls -Recurse -Force
