@@ -83,28 +83,38 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     - name: Execute Build
-      working-directory: .
+      working-directory: ${{github.workspace}}
       run: |
         # Open directory
         cd spread
 
+        ls
+
         # Make Release directory
-        mkdir Release
+        mkdir -p Release
+
+        ls
 
         # Execute Build
         msbuild Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
 
+        ls
+
         # Make publish directory
-        mkdir publish\addons\spread\dlls
+        mkdir -p ..\cstrike\addons\spread\dlls
+
+        ls
 
         # Copy cstrike files to publish
         copy ..\cstrike\* publish -Recurse -Force
 
+        ls
+
         # Move released dll to publish
-        copy Release\*.dll publish\addons\spread\dlls -Recurse -Force
+        copy Release\*.dll ..\cstrike\addons\spread\dlls -Recurse -Force
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
       with:
         name: win32
-        path: publish/*
+        path: ${{github.workspace}}/cstrike
