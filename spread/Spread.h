@@ -3,7 +3,7 @@
 typedef struct S_WEAPON_CTRL
 {
     float OnAir;        // Player is not in the ground
-    float Velocity;     // Velocity length for moving check
+    float Speed;        // Velocity length for moving check
     float Moving;       // When Player is moving
     float Ducking;      // When Ducking
     float Default;      // Normal value
@@ -14,7 +14,7 @@ class CSpread
 public:
     void ServerActivate();
     static void SetWeapon();
-    void AddWeapon(int WeaponIndex, float OnAir, float Moving, float Velocity, float Ducking, float Default);
+    void AddWeapon(int WeaponIndex, float OnAir, float Moving, float Speed, float Ducking, float Default);
     float CalcSpread(CBaseEntity *pEntity, float vecSpread);
 
 private:
