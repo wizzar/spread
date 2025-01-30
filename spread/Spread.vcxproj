@@ -47,10 +47,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>spread_mm</TargetName>
     <GenerateManifest>false</GenerateManifest>
+    <OutDir>$(SolutionDir)build\bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>spread_mm</TargetName>
     <GenerateManifest>false</GenerateManifest>
+    <OutDir>$(SolutionDir)build\bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -96,7 +100,6 @@
   <ItemGroup>
     <None Include="Makefile" />
     <None Include="PostBuild.ps1" />
-    <None Include="PostBuild.sh" />
     <None Include="Spread.def" />
   </ItemGroup>
   <ItemGroup>
