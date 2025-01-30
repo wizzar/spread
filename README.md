@@ -22,8 +22,8 @@
 <hr>
 
 ## How can use it?
-To install, copy the addons folder to you server's "cstrike/addons" folder such that "cstrike/addons/spread" folder exists and contains both a dll (or .so) and a spread.cfg file.
-After that, go to "cstrike/addons/metamod", open "plugins.ini" and add either "win32 addons\spread\spread_mm.dll" or "linux addons/spread/spread_mm.so".
+To install, copy the `addons` folder to you server's `cstrike/addons` folder such that `cstrike/addons/spread` folder exists and contains both a dll (or .so) and a spread.cfg file.
+After that, go to `cstrike/addons/metamod`, open `plugins.ini` and add either `win32 addons\spread\spread_mm.dll` or `linux addons/spread/spread_mm.so`.
 Start your server.
 
 ## Spread Control Settings
