@@ -21,16 +21,15 @@
 
 <hr>
 
-<details>
+## How can use it?
 To install, copy the addons folder to you server's "cstrike/addons" folder such that "cstrike/addons/spread" folder exists and contains both a dll (or .so) and a spread.cfg file.
 After that, go to "cstrike/addons/metamod", open "plugins.ini" and add either "win32 addons\spread\spread_mm.dll" or "linux addons/spread/spread_mm.so".
 Start your server.
-</details>
 
+## Spread Control Settings
 <details>
-  <summary align="center">Spread Control Settings (Click to expand)</summary><br>
+  <summary align="center">Click to expand</summary>
     
-```
 // Spread Control Plugin
 // This plugin controls the vecSpread variable of FireBullets3
 // https://github.com/rehlds/ReGameDLL_CS/blob/master/regamedll/dlls/cbase.cpp#L1268
@@ -80,5 +79,4 @@ Start your server.
 
       spread_deadCenterFirstShot "1"
 
-```
 </details>
