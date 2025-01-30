@@ -89,7 +89,7 @@ jobs:
         cd spread
 
         # Make Release directory
-        mkdir -p Release
+        mkdir -p build\bin\Release
 
         # Execute Build
         msbuild Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
@@ -101,7 +101,7 @@ jobs:
         copy ..\cstrike\* publish -Recurse -Force
 
         # Move released dll to publish
-        copy Release\*.dll ..\cstrike\addons\spread -Recurse -Force
+        copy build\bin\Release\*.dll ..\cstrike\addons\spread -Recurse -Force
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
