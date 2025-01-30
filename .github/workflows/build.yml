@@ -59,10 +59,11 @@ jobs:
           make
 
           # Make dlls path
-          mkdir -p ../cstrike/addons/spread/dlls
+          mkdir -p ../cstrike/addons/spread
 
           # Copy release file
-          cp ./Release/spread_mm.so ../cstrike/addons/spread/dlls
+          cp ./Release/spread_mm.so ../cstrike/addons/spread
+          cp ./config/spread.cfg ../cstrike/addons/spread
 
       run: docker exec build-container bash -c "$SCRIPT"
 
@@ -102,6 +103,7 @@ jobs:
 
         # Move released dll to publish
         copy build\bin\Release\*.dll ..\cstrike\addons\spread -Recurse -Force
+        copy spread\config\*.cfg ..\cstrike\addons\spread -Recurse -Force
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
