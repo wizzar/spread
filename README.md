@@ -22,53 +22,63 @@
 <hr>
 
 <details>
+To install, copy the addons folder to you server's "cstrike/addons" folder such that "cstrike/addons/spread" folder exists and contains both a dll (or .so) and a spread.cfg file.
+After that, go to "cstrike/addons/metamod", open "plugins.ini" and add either "win32 addons\spread\spread_mm.dll" or "linux addons/spread/spread_mm.so".
+Start your server.
+</details>
+
+<details>
   <summary align="center">Spread Control Settings (Click to expand)</summary><br>
     
 ```
 // Spread Control Plugin
-// This plugin control the vecSpread variable of FireBullets3
+// This plugin controls the vecSpread variable of FireBullets3
 // https://github.com/rehlds/ReGameDLL_CS/blob/master/regamedll/dlls/cbase.cpp#L1268
-//
+//								
 // The plugin multiply the vecSpread with specified factor on some situations.
 //
-// 1. The default factor is for any weapon is 1.0, any value bellow 0.0 will be ignored
-// 2. To not use some situation variable (Maintain as original), just pass -1.0 (minus -1.0) the plugin will ignore it
-// 3. To completly remove spread of weapon shots, pass 0.0 to an variable
-// 4. The weapon name must not include weapon_prefixes (Ie. ak47)
+// 1. Any value bellow 0.0 will be ignored, which means you just need to set it to -1.0 to ignore that scenario;
+// 2. To completly remove spread of weapon shots, you may set everything to -1.0, and set default to 0.0 for all;
+// 3. The spread_deadCenterFirstShot cvar works by completely removing the spread to make the first shot go right to the center of the crosshair.
+//								
+// weapon		Name of the weapon WITHOUT prefix, e.g., ak47.
+// in air		pread mitigation while player is airborne.
+// moving & standing	Spread mitigation while player is moving and NOT ducking.
+// moving & ducking	Spread mitigation while player is moving AND ducking.
+// standing still	Spread mitigation while player is NOT moving and NOT ducking.
+// ducking still	Spread mitigation while player is NOT moving AND ducking.
+// default		Default spread mitigation when the player a settings does not apply to a specific situation, or for other situations not mentioned here.
 //
-// weapon	Name of weapon WITHOUT prefix (Example: ak47)
-// on_air	Multiply factor when player is not on ground
-// speed	Max player velocity to dettermine if player is moving
-// moving	Multiply factor while player is moving
-// ducking	Factor while player is crouching
-// default	Multiply factor when player is not doing any actions above
+// Usage:	spread_wpn <weapon_name> <in_air> <moving_standing> <moving_ducking> <standing_still> <ducking_still> <default>
+// Example:     spread_wpn ak47 -1.0 -1.0 0.8 0.75 0.70 -1.0
 //
-// Usage:	spread_wpn <weapon> <on_air> <speed> <moving> <ducking> <default>
+//      COMMAND  |  WEAPON  |  IN   |  MOVING &  |  MOVING &  |  STANDING  |  DUCKING  |  DEFAULT  |
+//                          |  AIR  |  STANDING  |  DUCKING   |   STILL    |   STILL   |           |
 //
-//	COMMAND		WEAPON		AIR		SPEED		MOVING		DEFAULT
-//
-//	spread_wpn	galil		1.0		1.0		1.0		1.0
-//	spread_wpn	ak47		1.0		1.0		1.0		1.0
-//	spread_wpn	scout		1.0		1.0		1.0		1.0
-//	spread_wpn	sg55		1.0		1.0		1.0		1.0
-//	spread_wpn	awp		1.0		1.0		1.0		1.0
-//	spread_wpn	g3sg1		1.0		1.0		1.0		1.0
-//	spread_wpn	famas		1.0		1.0		1.0		1.0
-//	spread_wpn	m4a1		1.0		1.0		1.0		1.0	
-//	spread_wpn	aug		1.0		1.0		1.0		1.0
-//	spread_wpn	sg550		1.0		1.0		1.0		1.0
-//	spread_wpn	glock		1.0		1.0		1.0		1.0
-//	spread_wpn	usp		1.0		1.0		1.0		1.0	
-//	spread_wpn	p228		1.0		1.0		1.0		1.0
-//	spread_wpn	deagle		1.0		1.0		1.0		1.0
-//	spread_wpn	elites		1.0		1.0		1.0		1.0
-//	spread_wpn	fn57		1.0		1.0		1.0		1.0
-//	spread_wpn	mac10		1.0		1.0		1.0		1.0
-//	spread_wpn	tmp		1.0		1.0		1.0		1.0
-//	spread_wpn	mp5		1.0		1.0		1.0		1.0
-//	spread_wpn	ump45		1.0		1.0		1.0		1.0
-//	spread_wpn	p90		1.0		1.0		1.0		1.0
-//	spread_wpn	m249		1.0		1.0		1.0		1.0
+      spread_wpn    galil     -1.0       -1.0         0.85          0.8         0.7         -1.0
+      spread_wpn    ak47      -1.0       -1.0         0.85          0.6         0.5         -1.0
+      spread_wpn    scout     -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    sg55      -1.0       -1.0         0.85          0.85        0.8         -1.0
+      spread_wpn    awp       -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    g3sg1     -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    famas     -1.0       -1.0         0.85          0.75        0.65        -1.0
+      spread_wpn    m4a1      -1.0       -1.0         0.85          0.65        0.55        -1.0
+      spread_wpn    aug       -1.0       -1.0         0.85          0.9         0.8         -1.0
+      spread_wpn    sg550     -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    glock     -1.0       -1.0         0.85          0.6         0.5         -1.0
+      spread_wpn    usp       -1.0       -1.0         0.85          0.7         0.6         -1.0
+      spread_wpn    p228      -1.0       -1.0         0.85          0.6         0.5         -1.0
+      spread_wpn    deagle    -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    elites    -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    fn57      -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    mac10     -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    tmp       -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    mp5       -1.0       -1.0         0.85          0.8         0.7         -1.0
+      spread_wpn    ump45     -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    p90       -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+      spread_wpn    m249      -1.0       -1.0         0.85         -1.0        -1.0         -1.0
+
+      spread_deadCenterFirstShot "1"
 
 ```
 </details>
