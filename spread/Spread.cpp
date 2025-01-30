@@ -6,7 +6,7 @@ void CSpread::ServerActivate()
 {
 	this->m_Weapon.clear();
 
-	g_engfuncs.pfnAddServerCommand(strdup("spread_wpn"), this->SetWeapon);
+	g_engfuncs.pfnAddServerCommand("spread_wpn", this->SetWeapon);
 
 	const char* cvarName = "spread_deadCenterFirstShot";
 	cvar_t* cvarPtr = CVAR_GET_POINTER(cvarName);
@@ -32,7 +32,7 @@ void CSpread::ServerActivate()
 		gpMetaUtilFuncs->pfnLogConsole(PLID, "Failed to register \"%s\" cvar: already exists!", cvarName);
 	}
 
-	g_engfuncs.pfnServerCommand(strdup("exec addons/spread/spread.cfg\n"));
+	g_engfuncs.pfnServerCommand("exec addons/spread/spread.cfg\n");
 }
 
 void CSpread::SetWeapon()
@@ -61,10 +61,12 @@ void CSpread::SetWeapon()
 					std::stof(g_engfuncs.pfnCmd_Argv(7))); // Default
 			}
 		}
+
+		LOG_CONSOLE(PLID, "Spread control for \"%s\" set successfully", g_engfuncs.pfnCmd_Argv(1));
 	}
 	else
 	{
-		gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Usage: %s <weapon_name> <in_air> <moving_standing> <moving_ducking> <standing_still> <ducking_still> <default>. Example: \"%s ak47 -1.0 -1.0 0.8 0.75 0.70 -1.01\".", Plugin_info.logtag, g_engfuncs.pfnCmd_Argv(0), g_engfuncs.pfnCmd_Argv(0));
+		LOG_CONSOLE(PLID, "[%s] Usage: %s <weapon_name> <in_air> <moving_standing> <moving_ducking> <standing_still> <ducking_still> <default>. Example: \"%s ak47 -1.0 -1.0 0.8 0.75 0.70 -1.01\".", Plugin_info.logtag, g_engfuncs.pfnCmd_Argv(0), g_engfuncs.pfnCmd_Argv(0));
 	}
 }
 
@@ -85,12 +87,17 @@ void CSpread::AddWeapon(int WeaponIndex, float InAir, float MovingStanding, floa
 
 float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 {
-	if (!pEntity)
-		return vecSpread;
-
 	CBasePlayer* Player = static_cast<CBasePlayer*>(pEntity);
 	if (!(Player && Player->m_pActiveItem))
+	{
+#ifdef DEBUG
+		if (!Player)
+			LOG_CONSOLE(PLID, "[%s] !Player", __FUNCTION__);
+		else if (!Player->m_pActiveItem)
+			LOG_CONSOLE(PLID, "[%s] !Player->m_pActiveItem", __FUNCTION__);
+#endif
 		return vecSpread;
+	}
 
 	// See if current player weapon is configured.
 	auto theWeapon = this->m_Weapon.find(Player->m_pActiveItem->m_iId);
@@ -105,7 +112,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 		if (Control.InAir >= 0.0f)
 		{
 #ifdef DEBUG
-			LOG_CONSOLE(PLID, "[%s][OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.InAir);
+			LOG_CONSOLE(PLID, "[%s] [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.InAir);
 #endif
 			return vecSpread * Control.InAir;
 		}
@@ -118,7 +125,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 			&& Player->pev->velocity.Length2D() < (Player->m_pActiveItem->GetMaxSpeed() / 2))
 		{
 #ifdef DEBUG
-			LOG_CONSOLE(PLID, "[%s][OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, 0.0f);
+			LOG_CONSOLE(PLID, "[%s] [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, 0.0f);
 #endif
 			return 0.0f;
 		}
@@ -133,7 +140,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 					if (Control.MovingStanding >= 0.0f)
 					{
 #ifdef DEBUG
-						LOG_CONSOLE(PLID, "[%s][OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.MovingStanding);
+						LOG_CONSOLE(PLID, "[%s] [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.MovingStanding);
 #endif
 						return vecSpread * Control.MovingStanding;
 					}
@@ -144,7 +151,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 					if (Control.MovingDucking >= 0.0f)
 					{
 #ifdef DEBUG
-						LOG_CONSOLE(PLID, "[%s][OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.MovingDucking);
+						LOG_CONSOLE(PLID, "[%s] [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.MovingDucking);
 #endif
 						return vecSpread * Control.MovingDucking;
 					}
@@ -160,7 +167,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 					if (Control.StandingStill >= 0.0f)
 					{
 #ifdef DEBUG
-						LOG_CONSOLE(PLID, "[%s][OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.StandingStill);
+						LOG_CONSOLE(PLID, "[%s] [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.StandingStill);
 #endif
 						return vecSpread * Control.StandingStill;
 					}
@@ -172,7 +179,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 					if (Control.DuckingStill >= 0.0f)
 					{
 #ifdef DEBUG
-						LOG_CONSOLE(PLID, "[%s][OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.DuckingStill);
+						LOG_CONSOLE(PLID, "[%s] [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.DuckingStill);
 #endif
 						return vecSpread * Control.DuckingStill;
 					}
@@ -190,7 +197,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 	if (Control.Default >= 0.0f)
 	{
 #ifdef DEBUG
-		LOG_CONSOLE(PLID, "[%s][OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.Default);
+		LOG_CONSOLE(PLID, "[%s] [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * Control.Default);
 #endif
 		return vecSpread * Control.Default;
 	}

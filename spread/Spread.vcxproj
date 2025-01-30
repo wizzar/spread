@@ -73,7 +73,7 @@
       <ModuleDefinitionFile>Spread.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>Powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\PostBuild.ps1"</Command>
+      <Command>Powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\PostBuildDebug.ps1"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -94,21 +94,17 @@
       <ModuleDefinitionFile>Spread.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>Powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\PostBuild.ps1"</Command>
+      <Command>Powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\PostBuildRelease.ps1"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="config\spread.cfg" />
     <None Include="Makefile" />
-    <None Include="PostBuild.ps1" />
+    <None Include="PostBuildDebug.ps1" />
+    <None Include="PostBuildRelease.ps1" />
     <None Include="Spread.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\cssdk\common\parsemsg.cpp" />
-    <ClCompile Include="include\cssdk\engine\crc32c.cpp" />
-    <ClCompile Include="include\cssdk\engine\sys_shared.cpp" />
-    <ClCompile Include="include\cssdk\public\interface.cpp" />
-    <ClCompile Include="include\cssdk\public\tier0\dbg.cpp" />
     <ClCompile Include="MetaMod.cpp" />
     <ClCompile Include="precompiled.cpp" />
     <ClCompile Include="ReAPI.cpp" />
@@ -116,195 +112,6 @@
     <ClCompile Include="Spread.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\cssdk\common\beamdef.h" />
-    <ClInclude Include="include\cssdk\common\cl_entity.h" />
-    <ClInclude Include="include\cssdk\common\com_model.h" />
-    <ClInclude Include="include\cssdk\common\const.h" />
-    <ClInclude Include="include\cssdk\common\con_nprint.h" />
-    <ClInclude Include="include\cssdk\common\crc.h" />
-    <ClInclude Include="include\cssdk\common\cvardef.h" />
-    <ClInclude Include="include\cssdk\common\demo_api.h" />
-    <ClInclude Include="include\cssdk\common\director_cmds.h" />
-    <ClInclude Include="include\cssdk\common\dlight.h" />
-    <ClInclude Include="include\cssdk\common\dll_state.h" />
-    <ClInclude Include="include\cssdk\common\entity_state.h" />
-    <ClInclude Include="include\cssdk\common\entity_types.h" />
-    <ClInclude Include="include\cssdk\common\enums.h" />
-    <ClInclude Include="include\cssdk\common\event_api.h" />
-    <ClInclude Include="include\cssdk\common\event_args.h" />
-    <ClInclude Include="include\cssdk\common\event_flags.h" />
-    <ClInclude Include="include\cssdk\common\hltv.h" />
-    <ClInclude Include="include\cssdk\common\IGameServerData.h" />
-    <ClInclude Include="include\cssdk\common\in_buttons.h" />
-    <ClInclude Include="include\cssdk\common\IObjectContainer.h" />
-    <ClInclude Include="include\cssdk\common\ivoicetweak.h" />
-    <ClInclude Include="include\cssdk\common\kbutton.h" />
-    <ClInclude Include="include\cssdk\common\mathlib.h" />
-    <ClInclude Include="include\cssdk\common\netadr.h" />
-    <ClInclude Include="include\cssdk\common\net_api.h" />
-    <ClInclude Include="include\cssdk\common\nowin.h" />
-    <ClInclude Include="include\cssdk\common\ObjectList.h" />
-    <ClInclude Include="include\cssdk\common\parsemsg.h" />
-    <ClInclude Include="include\cssdk\common\particledef.h" />
-    <ClInclude Include="include\cssdk\common\pmtrace.h" />
-    <ClInclude Include="include\cssdk\common\port.h" />
-    <ClInclude Include="include\cssdk\common\qfont.h" />
-    <ClInclude Include="include\cssdk\common\qlimits.h" />
-    <ClInclude Include="include\cssdk\common\quakedef.h" />
-    <ClInclude Include="include\cssdk\common\ref_params.h" />
-    <ClInclude Include="include\cssdk\common\r_efx.h" />
-    <ClInclude Include="include\cssdk\common\r_studioint.h" />
-    <ClInclude Include="include\cssdk\common\screenfade.h" />
-    <ClInclude Include="include\cssdk\common\Sequence.h" />
-    <ClInclude Include="include\cssdk\common\SteamCommon.h" />
-    <ClInclude Include="include\cssdk\common\studio_event.h" />
-    <ClInclude Include="include\cssdk\common\triangleapi.h" />
-    <ClInclude Include="include\cssdk\common\usercmd.h" />
-    <ClInclude Include="include\cssdk\common\vmodes.h" />
-    <ClInclude Include="include\cssdk\common\weaponinfo.h" />
-    <ClInclude Include="include\cssdk\common\winsani_in.h" />
-    <ClInclude Include="include\cssdk\common\winsani_out.h" />
-    <ClInclude Include="include\cssdk\dlls\activity.h" />
-    <ClInclude Include="include\cssdk\dlls\activitymap.h" />
-    <ClInclude Include="include\cssdk\dlls\airtank.h" />
-    <ClInclude Include="include\cssdk\dlls\ammo.h" />
-    <ClInclude Include="include\cssdk\dlls\API\CSEntity.h" />
-    <ClInclude Include="include\cssdk\dlls\API\CSInterfaces.h" />
-    <ClInclude Include="include\cssdk\dlls\API\CSPlayer.h" />
-    <ClInclude Include="include\cssdk\dlls\API\CSPlayerItem.h" />
-    <ClInclude Include="include\cssdk\dlls\API\CSPlayerWeapon.h" />
-    <ClInclude Include="include\cssdk\dlls\basemonster.h" />
-    <ClInclude Include="include\cssdk\dlls\bmodels.h" />
-    <ClInclude Include="include\cssdk\dlls\bot\cs_bot.h" />
-    <ClInclude Include="include\cssdk\dlls\bot\cs_bot_chatter.h" />
-    <ClInclude Include="include\cssdk\dlls\bot\cs_bot_manager.h" />
-    <ClInclude Include="include\cssdk\dlls\bot\cs_gamestate.h" />
-    <ClInclude Include="include\cssdk\dlls\buttons.h" />
-    <ClInclude Include="include\cssdk\dlls\cbase.h" />
-    <ClInclude Include="include\cssdk\dlls\cdll_dll.h" />
-    <ClInclude Include="include\cssdk\dlls\client.h" />
-    <ClInclude Include="include\cssdk\dlls\csbot_dll.h" />
-    <ClInclude Include="include\cssdk\dlls\decals.h" />
-    <ClInclude Include="include\cssdk\dlls\doors.h" />
-    <ClInclude Include="include\cssdk\dlls\effects.h" />
-    <ClInclude Include="include\cssdk\dlls\enginecallback.h" />
-    <ClInclude Include="include\cssdk\dlls\explode.h" />
-    <ClInclude Include="include\cssdk\dlls\extdef.h" />
-    <ClInclude Include="include\cssdk\dlls\extdll.h" />
-    <ClInclude Include="include\cssdk\dlls\func_break.h" />
-    <ClInclude Include="include\cssdk\dlls\func_tank.h" />
-    <ClInclude Include="include\cssdk\dlls\gamerules.h" />
-    <ClInclude Include="include\cssdk\dlls\gib.h" />
-    <ClInclude Include="include\cssdk\dlls\healthkit.h" />
-    <ClInclude Include="include\cssdk\dlls\hintmessage.h" />
-    <ClInclude Include="include\cssdk\dlls\hookchains.h" />
-    <ClInclude Include="include\cssdk\dlls\hostage\hostage.h" />
-    <ClInclude Include="include\cssdk\dlls\hostage\hostage_improv.h" />
-    <ClInclude Include="include\cssdk\dlls\hostage\hostage_localnav.h" />
-    <ClInclude Include="include\cssdk\dlls\hostage\hostage_states.h" />
-    <ClInclude Include="include\cssdk\dlls\h_battery.h" />
-    <ClInclude Include="include\cssdk\dlls\h_cycler.h" />
-    <ClInclude Include="include\cssdk\dlls\items.h" />
-    <ClInclude Include="include\cssdk\dlls\lights.h" />
-    <ClInclude Include="include\cssdk\dlls\mapinfo.h" />
-    <ClInclude Include="include\cssdk\dlls\maprules.h" />
-    <ClInclude Include="include\cssdk\dlls\monsterevent.h" />
-    <ClInclude Include="include\cssdk\dlls\monsters.h" />
-    <ClInclude Include="include\cssdk\dlls\mortar.h" />
-    <ClInclude Include="include\cssdk\dlls\observer.h" />
-    <ClInclude Include="include\cssdk\dlls\pathcorner.h" />
-    <ClInclude Include="include\cssdk\dlls\plats.h" />
-    <ClInclude Include="include\cssdk\dlls\player.h" />
-    <ClInclude Include="include\cssdk\dlls\qstring.h" />
-    <ClInclude Include="include\cssdk\dlls\regamedll_api.h" />
-    <ClInclude Include="include\cssdk\dlls\regamedll_const.h" />
-    <ClInclude Include="include\cssdk\dlls\revert_saved.h" />
-    <ClInclude Include="include\cssdk\dlls\saverestore.h" />
-    <ClInclude Include="include\cssdk\dlls\schedule.h" />
-    <ClInclude Include="include\cssdk\dlls\skill.h" />
-    <ClInclude Include="include\cssdk\dlls\sound.h" />
-    <ClInclude Include="include\cssdk\dlls\spectator.h" />
-    <ClInclude Include="include\cssdk\dlls\subs.h" />
-    <ClInclude Include="include\cssdk\dlls\training_gamerules.h" />
-    <ClInclude Include="include\cssdk\dlls\trains.h" />
-    <ClInclude Include="include\cssdk\dlls\triggers.h" />
-    <ClInclude Include="include\cssdk\dlls\unisignals.h" />
-    <ClInclude Include="include\cssdk\dlls\util.h" />
-    <ClInclude Include="include\cssdk\dlls\vector.h" />
-    <ClInclude Include="include\cssdk\dlls\vehicle.h" />
-    <ClInclude Include="include\cssdk\dlls\weapons.h" />
-    <ClInclude Include="include\cssdk\dlls\weapontype.h" />
-    <ClInclude Include="include\cssdk\dlls\wpn_shared.h" />
-    <ClInclude Include="include\cssdk\engine\archtypes.h" />
-    <ClInclude Include="include\cssdk\engine\bspfile.h" />
-    <ClInclude Include="include\cssdk\engine\cmd_rehlds.h" />
-    <ClInclude Include="include\cssdk\engine\common_rehlds.h" />
-    <ClInclude Include="include\cssdk\engine\crc32c.h" />
-    <ClInclude Include="include\cssdk\engine\custom.h" />
-    <ClInclude Include="include\cssdk\engine\customentity.h" />
-    <ClInclude Include="include\cssdk\engine\d_local.h" />
-    <ClInclude Include="include\cssdk\engine\edict.h" />
-    <ClInclude Include="include\cssdk\engine\eiface.h" />
-    <ClInclude Include="include\cssdk\engine\FlightRecorder.h" />
-    <ClInclude Include="include\cssdk\engine\IMessageManager.h" />
-    <ClInclude Include="include\cssdk\engine\keydefs.h" />
-    <ClInclude Include="include\cssdk\engine\maintypes.h" />
-    <ClInclude Include="include\cssdk\engine\model.h" />
-    <ClInclude Include="include\cssdk\engine\modelgen.h" />
-    <ClInclude Include="include\cssdk\engine\osconfig.h" />
-    <ClInclude Include="include\cssdk\engine\progdefs.h" />
-    <ClInclude Include="include\cssdk\engine\progs.h" />
-    <ClInclude Include="include\cssdk\engine\pr_dlls.h" />
-    <ClInclude Include="include\cssdk\engine\rehlds_api.h" />
-    <ClInclude Include="include\cssdk\engine\rehlds_interfaces.h" />
-    <ClInclude Include="include\cssdk\engine\Sequence.h" />
-    <ClInclude Include="include\cssdk\engine\shake.h" />
-    <ClInclude Include="include\cssdk\engine\spritegn.h" />
-    <ClInclude Include="include\cssdk\engine\static_map.h" />
-    <ClInclude Include="include\cssdk\engine\studio.h" />
-    <ClInclude Include="include\cssdk\engine\sys_shared.h" />
-    <ClInclude Include="include\cssdk\engine\userid_rehlds.h" />
-    <ClInclude Include="include\cssdk\game_shared\bitvec.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\bot.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\bot_constants.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\bot_manager.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\bot_profile.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\bot_util.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\improv.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\nav.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\nav_area.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\nav_node.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\nav_path.h" />
-    <ClInclude Include="include\cssdk\game_shared\bot\simple_state_machine.h" />
-    <ClInclude Include="include\cssdk\game_shared\GameEvent.h" />
-    <ClInclude Include="include\cssdk\game_shared\perf_counter.h" />
-    <ClInclude Include="include\cssdk\game_shared\shared_util.h" />
-    <ClInclude Include="include\cssdk\game_shared\simple_checksum.h" />
-    <ClInclude Include="include\cssdk\game_shared\steam_util.h" />
-    <ClInclude Include="include\cssdk\game_shared\voice_common.h" />
-    <ClInclude Include="include\cssdk\game_shared\voice_gamemgr.h" />
-    <ClInclude Include="include\cssdk\pm_shared\pm_defs.h" />
-    <ClInclude Include="include\cssdk\pm_shared\pm_info.h" />
-    <ClInclude Include="include\cssdk\pm_shared\pm_materials.h" />
-    <ClInclude Include="include\cssdk\pm_shared\pm_movevars.h" />
-    <ClInclude Include="include\cssdk\pm_shared\pm_shared.h" />
-    <ClInclude Include="include\cssdk\public\basetypes.h" />
-    <ClInclude Include="include\cssdk\public\commonmacros.h" />
-    <ClInclude Include="include\cssdk\public\FileSystem.h" />
-    <ClInclude Include="include\cssdk\public\interface.h" />
-    <ClInclude Include="include\cssdk\public\strtools.h" />
-    <ClInclude Include="include\cssdk\public\tier0\dbg.h" />
-    <ClInclude Include="include\cssdk\public\tier0\platform.h" />
-    <ClInclude Include="include\cssdk\public\utlarray.h" />
-    <ClInclude Include="include\cssdk\public\utlmemory.h" />
-    <ClInclude Include="include\cssdk\public\utlvector.h" />
-    <ClInclude Include="include\metamod\dllapi.h" />
-    <ClInclude Include="include\metamod\enginecallbacks.h" />
-    <ClInclude Include="include\metamod\engine_api.h" />
-    <ClInclude Include="include\metamod\h_export.h" />
-    <ClInclude Include="include\metamod\meta_api.h" />
-    <ClInclude Include="include\metamod\mutil.h" />
-    <ClInclude Include="include\metamod\plinfo.h" />
     <ClInclude Include="MetaMod.h" />
     <ClInclude Include="precompiled.h" />
     <ClInclude Include="ReAPI.h" />
