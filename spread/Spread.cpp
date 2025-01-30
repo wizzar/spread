@@ -4,93 +4,28 @@ CSpread gSpread;
 
 void CSpread::ServerActivate()
 {
-    this->m_Weapon.clear();
+    static cvar_t Spread_Divisor = { "sc_divisor", strdup("2.0"), FCVAR_SERVER | FCVAR_PROTECTED, 2.0f, NULL };
 
-    g_engfuncs.pfnAddServerCommand(strdup("spread_wpn"), this->SetWeapon);
+	g_engfuncs.pfnCVarRegister(&Spread_Divisor);
 
-    g_engfuncs.pfnServerCommand(strdup("exec addons/spread/spread.cfg\n"));
+	this->m_Spread_Divisor = g_engfuncs.pfnCVarGetPointer(Spread_Divisor.name);
 }
 
-void CSpread::SetWeapon()
+float CSpread::GetSpread(CBasePlayer *Player, float vecSpread)
 {
-    if (g_engfuncs.pfnCmd_Argc() >= 7)
+    if (this->m_Spread_Divisor)
     {
-        std::string WeaponName = g_engfuncs.pfnCmd_Argv(1);
-
-        if (WeaponName.find("weapon_") == std::string::npos)
-        {
-            WeaponName = "weapon_" + WeaponName;
-        }
-
-        if (!WeaponName.empty())
-        {
-            auto Slot = g_ReGameApi->GetWeaponSlot(WeaponName.c_str());
-
-            if (Slot)
-            {
-                gSpread.AddWeapon(Slot->id, std::stof(g_engfuncs.pfnCmd_Argv(2)), std::stof(g_engfuncs.pfnCmd_Argv(3)), std::stof(g_engfuncs.pfnCmd_Argv(4)), std::stof(g_engfuncs.pfnCmd_Argv(5)), std::stof(g_engfuncs.pfnCmd_Argv(6)));
-            }
-        }  
-    }
-    else
-    {
-        gpMetaUtilFuncs->pfnLogConsole(PLID, "[%s] Usage: %s <weapon_name> <on_air> <speed> <moving> <ducking> <default>", Plugin_info.logtag, g_engfuncs.pfnCmd_Argv(0));
-    }
-}
-
-void CSpread::AddWeapon(int WeaponIndex, float OnAir, float Speed, float Moving, float Ducking, float Default)
-{
-    this->m_Weapon[WeaponIndex].OnAir = OnAir;
-
-    this->m_Weapon[WeaponIndex].Speed = Speed;
-    
-    this->m_Weapon[WeaponIndex].Moving = Moving;
-
-    this->m_Weapon[WeaponIndex].Ducking = Ducking;
-
-    this->m_Weapon[WeaponIndex].Default = Default;
-}
-
-float CSpread::CalcSpread(CBaseEntity *pEntity, float vecSpread)
-{
-    if (pEntity)
-    {
-        CBasePlayer* Player = static_cast<CBasePlayer*>(pEntity);
-
-        if (Player)
+        if (this->m_Spread_Divisor->value > 0.0f)
         {
             if (Player->m_pActiveItem)
             {
-                if (this->m_Weapon.find(Player->m_pActiveItem->m_iId) != this->m_Weapon.end())
+                if (Player->pev->flags & FL_ONGROUND)
                 {
-                    P_WEAPON_CTRL Control = this->m_Weapon.at(Player->m_pActiveItem->m_iId);
-
-                    if (!(pEntity->pev->flags & FL_ONGROUND))
+                    if (Player->pev->punchangle.IsZero())
                     {
-                        if (Control.OnAir >= 0.0f)
+                        if (Player->pev->velocity.Length2D() < (Player->m_pActiveItem->GetMaxSpeed() / this->m_Spread_Divisor->value))
                         {
-                            vecSpread = (vecSpread * Control.OnAir);
-                        }
-                    }
-                    else if (pEntity->pev->velocity.Length2D() > Control.Speed)
-                    {
-                        if (Control.Moving >= 0.0f)
-                        {
-                            vecSpread = (vecSpread * Control.Moving);
-                        }
-                    }
-                    else if (pEntity->pev->flags & FL_DUCKING)
-                    {
-                        if (Control.Ducking >= 0.0f)
-                        {
-                            vecSpread = (vecSpread * Control.Ducking);
-                        }
-                    }
-                    else
-                    {
-                        if (Control.Default >= 0.0f)
-                        {
-                            vecSpread = (vecSpread * Control.Default);
+                            vecSpread = 0.0f;
                         }
                     }
                 }
