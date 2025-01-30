@@ -94,16 +94,24 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="*.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="*.cpp">
-      <PrecompiledHeader Condition="'$(Identity)'=='precompiled.cpp' And '$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Identity)'=='precompiled.cpp' And '$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include="PostBuild.ps1" />
+    <None Include="PostBuild.sh" />
     <None Include="Spread.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MetaMod.cpp" />
+    <ClCompile Include="precompiled.cpp" />
+    <ClCompile Include="ReAPI.cpp" />
+    <ClCompile Include="ReGameDLL.cpp" />
+    <ClCompile Include="Spread.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MetaMod.h" />
+    <ClInclude Include="precompiled.h" />
+    <ClInclude Include="ReAPI.h" />
+    <ClInclude Include="ReGameDLL.h" />
+    <ClInclude Include="Spread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
