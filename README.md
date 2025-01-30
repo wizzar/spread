@@ -1,4 +1,4 @@
-<h3 align="center">ReGameDLL_CS Spread Control Plugin</h3>
+<h3 align="center">ReGameDLL_CS Spread Control Plugin<br/>Forked from SmileYzn</h3>
 
 <p align="center">Control the FireBullets3 function vecSpread parameter</p>
 
