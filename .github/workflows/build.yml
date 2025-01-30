@@ -98,9 +98,6 @@ jobs:
         # Make publish directory
         mkdir -p ..\cstrike\addons\spread
 
-        # Copy cstrike files to publish
-        copy ..\cstrike\* publish -Recurse -Force
-
         # Move released dll to publish
         copy build\bin\Release\*.dll ..\cstrike\addons\spread -Recurse -Force
         copy config\*.cfg ..\cstrike\addons\spread -Recurse -Force
