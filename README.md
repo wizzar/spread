@@ -29,7 +29,8 @@ Start your server.
 ## Spread Control Settings
 <details>
   <summary align="center">Click to expand</summary>
-    
+
+```
 // Spread Control Plugin
 // This plugin controls the vecSpread variable of FireBullets3
 // https://github.com/rehlds/ReGameDLL_CS/blob/master/regamedll/dlls/cbase.cpp#L1268
@@ -78,5 +79,5 @@ Start your server.
       spread_wpn    m249      -1.0       -1.0         0.85         -1.0        -1.0         -1.0
 
       spread_deadCenterFirstShot "1"
-
+```
 </details>
