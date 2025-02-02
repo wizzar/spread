@@ -92,6 +92,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ModuleDefinitionFile>Spread.def</ModuleDefinitionFile>
+      <GenerateMapFile>false</GenerateMapFile>
     </Link>
     <PostBuildEvent>
       <Command>Powershell.exe -ExecutionPolicy Unrestricted -file "$(ProjectDir)\PostBuildRelease.ps1"</Command>

@@ -29,7 +29,6 @@ public:
     }
 
 private:
-    //std::map<int, P_WEAPON_CTRL> m_Weapon = {};
     P_WEAPON_CTRL m_WeaponsCfg[MAX_WEAPONS] = {};
     cvar_t* m_deadCenterFirstShotCvar = NULL;
     std::ofstream logFile;

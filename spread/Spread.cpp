@@ -17,11 +17,6 @@ CSpread gSpread;
 #endif
 
 #ifdef DEBUG
-#define DEBUG_CONSOLE(...) LOG_CONSOLE(PLID, __VA_ARGS__)
-#define LOG_SHOT(msg) logToFile(msg)
-#else
-#define DEBUG_CONSOLE(...)
-#define LOG_SHOT(msg)
 
 int sc_DeadCenter = 0;
 int sc_Airborne = 0;
@@ -31,6 +26,11 @@ int sc_MovingStanding = 0;
 int sc_MovingDucking = 0;
 int sc_Default = 0;
 
+#define DEBUG_CONSOLE(...) LOG_CONSOLE(PLID, __VA_ARGS__)
+#define LOG_SHOT(msg) logToFile(msg)
+#else
+#define DEBUG_CONSOLE(...)
+#define LOG_SHOT(msg)
 #endif
 
 #define IS_STANDING(flags) (!((flags) & FL_DUCKING))
@@ -111,7 +111,8 @@ void CSpread::SetWeapon()
 		{
 			auto slot = g_ReGameApi->GetWeaponSlot(weaponName.c_str());
 
-			if (slot)
+			if (slot->slot == PRIMARY_WEAPON_SLOT ||
+				slot->slot == PISTOL_SLOT)
 			{
 				gSpread.AddWeapon(slot->id,
 					std::stof(g_engfuncs.pfnCmd_Argv(2)),  // InAir
@@ -120,10 +121,14 @@ void CSpread::SetWeapon()
 					std::stof(g_engfuncs.pfnCmd_Argv(5)),  // StandingStill
 					std::stof(g_engfuncs.pfnCmd_Argv(6)),  // DuckingStill
 					std::stof(g_engfuncs.pfnCmd_Argv(7))); // Default
+
+				DEBUG_CONSOLE("Spread control for \"%s\" set successfully", g_engfuncs.pfnCmd_Argv(1));
+			}
+			else
+			{
+				LOG_CONSOLE(PLID, "Unknown weapon \"%s\"", g_engfuncs.pfnCmd_Argv(1));
 			}
 		}
-
-		DEBUG_CONSOLE("Spread control for \"%s\" set successfully", g_engfuncs.pfnCmd_Argv(1));
 
 #ifndef DEBUG
 		LOG_CONSOLE(PLID, "Spread config loaded successfully");
@@ -163,9 +168,11 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 #endif
 		return vecSpread;
 	}
-	
+
 	// See if current player weapon is configured.
-	P_WEAPON_CTRL weaponCfg = this->m_WeaponsCfg[pPlayer->m_pActiveItem->m_iId];
+	const int wepId = pPlayer->m_pActiveItem->m_iId;
+	P_WEAPON_CTRL weaponCfg = this->m_WeaponsCfg[wepId];
+	
 	if (!weaponCfg.IsValid)
 		return vecSpread;
 
