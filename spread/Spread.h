@@ -2,7 +2,7 @@
 
 typedef struct S_WEAPON_CTRL
 {
-    bool  IsValid = false;
+    bool  IsValid;
 
     float InAir;            // Mitigation while the player is in the air.
     float MovingStanding;
