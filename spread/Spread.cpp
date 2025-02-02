@@ -22,6 +22,15 @@ CSpread gSpread;
 #else
 #define DEBUG_CONSOLE(...)
 #define LOG_SHOT(msg)
+
+int sc_DeadCenter = 0;
+int sc_Airborne = 0;
+int sc_StillStanding = 0;
+int sc_StillDucking = 0;
+int sc_MovingStanding = 0;
+int sc_MovingDucking = 0;
+int sc_Default = 0;
+
 #endif
 
 #define IS_STANDING(flags) (!((flags) & FL_DUCKING))
@@ -35,14 +44,6 @@ void CSpread::logToFile(const std::string& message) {
 	if (this->logFile.is_open())
 		this->logFile << message << std::endl;
 }
-
-int sc_DeadCenter = 0;
-int sc_Airborne = 0;
-int sc_StillStanding = 0;
-int sc_StillDucking = 0;
-int sc_MovingStanding = 0;
-int sc_MovingDucking = 0;
-int sc_Default = 0;
 
 void CSpread::ServerActivate()
 {
