@@ -68,6 +68,7 @@ bool ReGameDLL_Stop()
 		g_ReGameHookchains->InstallGameRules()->unregisterHook(ReGameDLL_InstallGameRules);
 
 		g_ReGameHookchains->CBaseEntity_FireBullets3()->unregisterHook(ReGameDLL_CBaseEntity_FireBullets3);
+
 	}
 
 	return true;

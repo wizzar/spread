@@ -31,7 +31,7 @@ $hldsIP = (Get-NetIPAddress -AddressFamily IPV4 -InterfaceAlias Ethernet).IPAddr
 $hldsPort = 27020
 
 # Executable parameters
-$hldsParam = "-console -game cstrike -port $hldsPort -pingboost 3 -steam -master -secure -bots -timeout 3 +ip $hldsIP +map de_nuke +maxplayers 32 +sys_ticrate 1000";
+$hldsParam = "-dev -console -game cstrike -port $hldsPort -pingboost 3 -steam -master -secure -bots -timeout 3 +ip $hldsIP +map de_nuke +maxplayers 32 +sys_ticrate 1000";
 
 # DLL Path
 $dllPath = "$hldsPath\cstrike\addons\$pluginName";

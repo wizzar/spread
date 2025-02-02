@@ -7,9 +7,9 @@ plugin_info_t Plugin_info =
 	"Spread Control Plugin",
 	"0.0.1",
 	__DATE__,
-	"SmileY",
-	"https://github.com/SmileYzn/spread",
-	"SPREAD",
+	"DevOak", // Forked from Smiley@https://github.com/SmileYzn/spread
+	"https://github.com/wizzar/spread",
+	"SPREAD CTRL",
 	PT_STARTUP,
 	PT_ANYTIME,
 };
@@ -24,7 +24,7 @@ META_FUNCTIONS gMetaFunctionTable;
 C_DLLEXPORT void WINAPI GiveFnptrsToDll(enginefuncs_t *pengfuncsFromEngine, globalvars_t *pGlobals)
 {
 	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
-	
+
 	gpGlobals = pGlobals;
 }
 

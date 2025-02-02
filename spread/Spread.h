@@ -17,11 +17,20 @@ public:
     void ServerActivate();
     static void SetWeapon();
     void AddWeapon(int WeaponIndex, float InAir, float MovingStanding, float MovingDucking, float StandingStill, float DuckingStill, float Default);
-    float CalcSpread(CBaseEntity *pEntity, float vecSpread);
-    cvar_t* m_deadCenterFirstShotCvar;
+    float CalcSpread(CBaseEntity* pEntity, float vecSpread);
+
+    ~CSpread() {
+        if (logFile.is_open()) {
+            logToFile("Closing log");
+            logFile.close();
+        }
+    }
 
 private:
     std::map<int, P_WEAPON_CTRL> m_Weapon = {};
+    cvar_t* m_deadCenterFirstShotCvar = NULL;
+    std::ofstream logFile;
+    void logToFile(const std::string& message);
 };
 
 extern CSpread gSpread;
