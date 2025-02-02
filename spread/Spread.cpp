@@ -303,8 +303,6 @@ FORCEDINLINE bool ShouldForceDeadCenterShot(CBasePlayer* pPlayer, bool firstShot
 
 		case WEAPON_SG550:
 		case WEAPON_G3SG1:
-		case WEAPON_SG552:
-		case WEAPON_AUG:
 			hasActiveZoom = pev->fov != DEFAULT_FOV;
 			break;
 
