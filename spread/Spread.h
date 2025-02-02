@@ -2,6 +2,8 @@
 
 typedef struct S_WEAPON_CTRL
 {
+    bool  IsValid = false;
+
     float InAir;            // Mitigation while the player is in the air.
     float MovingStanding;
     float MovingDucking;
@@ -27,7 +29,8 @@ public:
     }
 
 private:
-    std::map<int, P_WEAPON_CTRL> m_Weapon = {};
+    //std::map<int, P_WEAPON_CTRL> m_Weapon = {};
+    P_WEAPON_CTRL m_WeaponsCfg[MAX_WEAPONS] = {};
     cvar_t* m_deadCenterFirstShotCvar = NULL;
     std::ofstream logFile;
     void logToFile(const std::string& message);
