@@ -67,7 +67,8 @@ void CSpread::ServerActivate()
 
 	memset(this->m_WeaponsCfg, 0, sizeof(this->m_WeaponsCfg));
 
-	g_engfuncs.pfnAddServerCommand("spread_wpn", this->SetWeapon);
+	char cmd_name[] = "spread_wpn";
+	g_engfuncs.pfnAddServerCommand(cmd_name, this->SetWeapon);
 
 	const char* cvarName = "spread_deadCenterFirstShot";
 	cvar_t* cvarPtr = CVAR_GET_POINTER(cvarName);
@@ -75,7 +76,8 @@ void CSpread::ServerActivate()
 	{
 		// Defines whether the first shot is always dead center when standing or ducking, but not moving.
 		cvar_t CvarData;
-		CvarData = { cvarName, "0", 0, 0.0f, NULL };
+		char cmd_name[] = "0";
+		CvarData = { cvarName, cmd_name, 0, 0.0f, NULL };
 		CVAR_REGISTER(&CvarData);
 		cvarPtr = CVAR_GET_POINTER(cvarName);
 
@@ -93,7 +95,8 @@ void CSpread::ServerActivate()
 		LOG_CONSOLE(PLID, "Failed to register \"%s\" cvar: already exists!", cvarName);
 	}
 
-	g_engfuncs.pfnServerCommand("exec addons/spread/spread.cfg\n");
+	char execCfgCmd[] = "exec addons / spread / spread.cfg\n";
+	g_engfuncs.pfnServerCommand(execCfgCmd);
 }
 
 void CSpread::SetWeapon()
@@ -122,18 +125,13 @@ void CSpread::SetWeapon()
 					std::stof(g_engfuncs.pfnCmd_Argv(6)),  // DuckingStill
 					std::stof(g_engfuncs.pfnCmd_Argv(7))); // Default
 
-				DEBUG_CONSOLE("Spread control for \"%s\" set successfully", g_engfuncs.pfnCmd_Argv(1));
+				LOG_CONSOLE(PLID, "Spread control for \"%s\" set successfully", g_engfuncs.pfnCmd_Argv(1));
 			}
 			else
 			{
 				LOG_CONSOLE(PLID, "Unknown weapon \"%s\"", g_engfuncs.pfnCmd_Argv(1));
 			}
 		}
-
-#ifndef DEBUG
-		LOG_CONSOLE(PLID, "Spread config loaded successfully");
-#endif
-
 	}
 	else
 	{
@@ -144,7 +142,7 @@ void CSpread::SetWeapon()
 void CSpread::AddWeapon(int WeaponIndex, float InAir, float MovingStanding, float MovingDucking, float StandingStill, float DuckingStill, float Default)
 {
 	this->m_WeaponsCfg[WeaponIndex] =
-	{
+	P_WEAPON_CTRL {
 		true,
 		InAir,
 		MovingStanding,
