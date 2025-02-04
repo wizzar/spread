@@ -76,8 +76,8 @@ void CSpread::ServerActivate()
 	{
 		// Defines whether the first shot is always dead center when standing or ducking, but not moving.
 		cvar_t CvarData;
-		char cmd_name[] = "0";
-		CvarData = { cvarName, cmd_name, 0, 0.0f, NULL };
+		char str_val[] = "0";
+		CvarData = { cvarName, str_val, 0, 0.0f, NULL };
 		CVAR_REGISTER(&CvarData);
 		cvarPtr = CVAR_GET_POINTER(cvarName);
 
@@ -95,7 +95,7 @@ void CSpread::ServerActivate()
 		LOG_CONSOLE(PLID, "Failed to register \"%s\" cvar: already exists!", cvarName);
 	}
 
-	char execCfgCmd[] = "exec addons / spread / spread.cfg\n";
+	char execCfgCmd[] = "exec addons/spread/spread.cfg\n";
 	g_engfuncs.pfnServerCommand(execCfgCmd);
 }
 
