@@ -87,10 +87,10 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         # Open directory
-        cd spread
+        # cd src
 
         # Make Release directory
-        mkdir -p build\bin\Release
+        mkdir -p build\release\bin
 
         # Execute Build
         msbuild Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
@@ -99,7 +99,7 @@ jobs:
         mkdir -p ..\cstrike\addons\spread
 
         # Move released dll to publish
-        copy build\bin\Release\*.dll ..\cstrike\addons\spread -Recurse -Force
+        copy build\release\bin\*.dll ..\cstrike\addons\spread -Recurse -Force
         copy config\*.cfg ..\cstrike\addons\spread -Recurse -Force
 
     - name: Deploy artifacts
