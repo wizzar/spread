@@ -110,7 +110,7 @@
     <None Include="spread.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="linux.cpp" />
+    <ClCompile Include="linux.h" />
     <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="regame_api_plugin.cpp" />
     <ClCompile Include="rehlds_api_plugin.cpp" />
