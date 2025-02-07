@@ -50,20 +50,17 @@ jobs:
       env:
         SCRIPT: |
           # Open makefile directory
-          cd /desktop/spread
-
-          # Make Release Directory
-          mkdir -p Release
+          cd desktop/src
 
           # Make linux (Without post build script)
           make
 
           # Make dlls path
-          mkdir -p ../cstrike/addons/spread
+          mkdir -p cstrike/addons/spread
 
           # Copy release file
-          cp ./Release/spread_mm.so ../cstrike/addons/spread
-          cp ./config/spread.cfg ../cstrike/addons/spread
+          cp Release/spread_mm.so cstrike/addons/spread
+          cp config/spread.cfg cstrike/addons/spread
 
       run: docker exec build-container bash -c "$SCRIPT"
 
@@ -86,21 +83,15 @@ jobs:
     - name: Execute Build
       working-directory: ${{github.workspace}}
       run: |
-        # Open directory
-        cd spread
-
-        # Make Release directory
-        mkdir -p build\bin\Release
-
         # Execute Build
-        msbuild Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
+        msbuild src\Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
 
         # Make publish directory
-        mkdir -p ..\cstrike\addons\spread
+        mkdir -p cstrike\addons\spread
 
         # Move released dll to publish
-        copy build\bin\Release\*.dll ..\cstrike\addons\spread -Recurse -Force
-        copy config\*.cfg ..\cstrike\addons\spread -Recurse -Force
+        copy src\build\release\bin\*.dll cstrike\addons\spread -Recurse -Force
+        copy src\config\*.cfg cstrike\addons\spread -Recurse -Force
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
