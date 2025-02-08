@@ -124,6 +124,9 @@ C_DLLEXPORT void WINAPI GiveFnptrsToDll(enginefuncs_t* pengfuncsFromEngine, glob
 //   pMetaUtilFuncs		(given)		table of utility functions provided by Metamod;
 C_DLLEXPORT int Meta_Query(char *interfaceVersion, plugin_info_t **plinfo, mutil_funcs_t *pMetaUtilFuncs)
 {
+	char buffer[128];
+	std::sprintf(buffer, "\n\n#########################\n# Interface version: %s #\n#########################\n\n", interfaceVersion);
+	SERVER_PRINT(buffer);
 	*plinfo = &Plugin_info;
 	gpMetaUtilFuncs = pMetaUtilFuncs;
 	return TRUE;
