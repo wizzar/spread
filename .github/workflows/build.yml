@@ -56,7 +56,7 @@ jobs:
           make
 
           # Make dlls path
-          mkdir -p cstrike/addons/spread
+          mkdir -p ./cstrike/addons/spread
 
           # Copy release file
           cp ./Release/spread_mm.so ./cstrike/addons/spread
