@@ -10,4 +10,5 @@
 #define _close close
 #define _acces access
 #define _vsnwprintf vswprintf
+#define _snprintf snprintf
 #endif
