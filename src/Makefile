@@ -36,7 +36,8 @@ CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0 \
             -D_close=close \
             -D_acces=access \
             -D_vsnwprintf=vswprintf \
-            -D_snprintf=snprintf
+            -D_snprintf=snprintf \
+            -D_DEBUG
 #
 # Defult: prebuild, linux32, posbuild
 default: prebuild $(BUILD_TARGET) posbuild
