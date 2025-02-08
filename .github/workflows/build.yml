@@ -57,7 +57,7 @@ jobs:
     - name: Build Release
       run: |
           # Open makefile directory
-          cd src
+          cd /desktop/src
 
           # Make linux release
           make
@@ -68,17 +68,17 @@ jobs:
 
 #          # List symbols
 #          nm -D Release/spread_mm.so
-    - name: Build Debug
-      run: |
-          # Open makefile directory
-          cd src
-
-          # Make linux debug
-          make -f MakefileDbg
-
-          # Copy release file
-          cp Release/spread_mm.so build/debug/cstrike/addons/spread
-          cp config/spread.cfg build/debug/cstrike/addons/spread
+#    - name: Build Debug
+#      run: |
+#          # Open makefile directory
+#          cd src
+#
+#          # Make linux debug
+#          make -f MakefileDbg
+#
+#          # Copy release file
+#          cp Release/spread_mm.so build/debug/cstrike/addons/spread
+#          cp config/spread.cfg build/debug/cstrike/addons/spread
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
