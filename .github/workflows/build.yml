@@ -27,7 +27,7 @@ jobs:
       run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install sudo apt-get install -y gcc-multilib g++-multilib
+          sudo apt-get install -y gcc-multilib g++-multilib
 
     - name: Build
       run: |
