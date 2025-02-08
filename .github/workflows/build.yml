@@ -49,8 +49,8 @@ jobs:
           cp Release/spread_mm.so build/release/cstrike/addons/spread
           cp config/spread.cfg build/release/cstrike/addons/spread
 
-          # List symbols
-          nm -D Release/spread_mm.so
+#          # List symbols
+#          nm -D Release/spread_mm.so
     - name: Build Debug
       run: |
           # Open makefile directory
