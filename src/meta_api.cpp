@@ -1,3 +1,4 @@
+#include <osconfig.h>
 #include "wrapper_meta_api.h"
 #include "meta_globals.h"
 #include "rehlds_api_plugin.h"

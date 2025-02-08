@@ -1,3 +1,4 @@
+#include <osconfig.h>
 #include "wrapper_meta_api.h"
 #include "interface.cpp" // needed definition for Sys_GetModuleHandle
 

@@ -1,3 +1,4 @@
+#include <osconfig.h>
 #include "wrapper_meta_api.h"
 #include "regame_api_plugin.h"
 
