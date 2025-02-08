@@ -14,8 +14,6 @@
 #
 name: Action Build System
 on: [push]
-env:
-  CONTAINER: ubuntu:20.04
 
 jobs:
   linux:
@@ -25,21 +23,14 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: Install Development Tools Packages
-      env:
-        SCRIPT: |
-          # Add i386 architecture
-          dpkg --add-architecture i386
-
-          # Update repository
-          apt-get update
-
-          # Install build dependencies
+    - name: Install Dependencies
+      run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
           apt-get install sudo apt-get install -y gcc-multilib g++-multilib
 
-    - name: Execute Build
-      env:
-        SCRIPT: |
+    - name: Build
+      run: |
           # Open makefile directory
           cd desktop/src
 
@@ -49,16 +40,9 @@ jobs:
           # Make dlls path
           mkdir -p cstrike/addons/spread
 
-          echo "Checking files in workspace..."
-          ls -laR ./Release
-          ls -laR ./config
-          ls -laR ./cstrike
-
           # Copy release file
-          cp ./Release/spread_mm.so ./cstrike/addons/spread
-          cp ./config/spread.cfg ./cstrike/addons/spread
-
-      run: docker exec build-container bash -c "$SCRIPT"
+          cp Release/spread_mm.so cstrike/addons/spread
+          cp config/spread.cfg cstrike/addons/spread
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
