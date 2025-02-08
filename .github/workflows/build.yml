@@ -59,8 +59,8 @@ jobs:
           mkdir -p ./cstrike/addons/spread
 
           # Copy release file
-          cp ./Release/spread_mm.so ./cstrike/addons/spread
-          cp ./config/spread.cfg ./cstrike/addons/spread
+          cp ./src/Release/spread_mm.so ./cstrike/addons/spread
+          cp ./src/config/spread.cfg ./cstrike/addons/spread
 
       run: docker exec build-container bash -c "$SCRIPT"
 
