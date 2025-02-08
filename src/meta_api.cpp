@@ -2,7 +2,6 @@
 #include "meta_globals.h"
 #include "rehlds_api_plugin.h"
 #include "regame_api_plugin.h"
-#include "spread.h"
 
 enginefuncs_t g_engfuncs;
 globalvars_t* gpGlobals;
