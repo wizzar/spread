@@ -6,7 +6,7 @@ BUILD_DIR=Release
 #
 # System based commands
 PRE_CMD=mkdir -p $(BUILD_DIR)
-POS_CMD=sh PostBuild.sh
+#POS_CMD=sh PostBuild.sh
 CLEAN_CMD=rm -rf $(BUILD_DIR)
 #
 # Common build definitions
@@ -37,8 +37,8 @@ prebuild:
 	$(PRE_CMD)
 #
 # Pos-build: Execute command
-posbuild:
-	$(POS_CMD)
+#posbuild:
+#	$(POS_CMD)
 #
 # Linux target build
 $(BUILD_TARGET): $(BUILD_OBJECTS)
