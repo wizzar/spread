@@ -44,7 +44,7 @@ jobs:
 
           # Update alternatives
           update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
-      run: docker exec build-container bash -c "$
+      run: docker exec build-container bash -c "$SCRIPT"
       
     - name: Prepare dirs
       run: |
