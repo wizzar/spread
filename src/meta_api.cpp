@@ -8,7 +8,7 @@ enginefuncs_t g_engfuncs;
 globalvars_t* gpGlobals;
 meta_globals_t* gpMetaGlobals;
 mutil_funcs_t* gpMetaUtilFuncs;
-
+gamedll_funcs_t* gpGamedllFuncs;
 
 plugin_info_t Plugin_info =
 {
@@ -29,14 +29,68 @@ plugin_info_t Plugin_info =
 // These are defined in the engine_api.cpp and dllapi.cpp files.
 META_FUNCTIONS gMetaFunctionTable =
 {
-	NULL,						//            pfnGetEntityAPI	HL SDK; called before game DLL;
-	NULL,						//       pfnGetEntityAPI_Post	META; called after game DLL;
-	NULL,						//           pfnGetEntityAPI2	HL SDK2; called before game DLL;
-	GetEntityAPI2_Post,			//      pfnGetEntityAPI2_Post	META; called after game DLL;
-	NULL,						//      pfnGetNewDLLFunctions	HL SDK2; called before game DLL;
-	NULL,						// pfnGetNewDLLFunctions_Post	META; called after game DLL;
-	NULL,						//      pfnGetEngineFunctions	META; called before HL engine;
-	NULL,						// pfnGetEngineFunctions_Post	META; called after HL engine;
+	NULL,						// pfnGetEntityAPI		HL SDK; called before game DLL
+	NULL,						// pfnGetEntityAPI_Post		META; called after game DLL
+	GetEntityAPI2,				// pfnGetEntityAPI2		HL SDK2; called before game DLL
+	GetEntityAPI2_Post,			// pfnGetEntityAPI2_Post	META; called after game DLL
+	GetNewDLLFunctions,			// pfnGetNewDLLFunctions	HL SDK2; called before game DLL
+	GetNewDLLFunctions_Post,	// pfnGetNewDLLFunctions_Post	META; called after game DLL
+	GetEngineFunctions,			// pfnGetEngineFunctions	META; called before HL engine
+	GetEngineFunctions_Post,	// pfnGetEngineFunctions_Post	META; called after HL engine
+};
+
+DLL_FUNCTIONS g_DllFunctionTable =
+{
+	NULL,					// pfnGameInit
+	NULL,					// pfnSpawn
+	NULL,					// pfnThink
+	NULL,					// pfnUse
+	NULL,					// pfnTouch
+	NULL,					// pfnBlocked
+	NULL,					// pfnKeyValue
+	NULL,					// pfnSave
+	NULL,					// pfnRestore
+	NULL,					// pfnSetAbsBox
+	NULL,					// pfnSaveWriteFields
+	NULL,					// pfnSaveReadFields
+	NULL,					// pfnSaveGlobalState
+	NULL,					// pfnRestoreGlobalState
+	NULL,					// pfnResetGlobalState
+	NULL,					// pfnClientConnect
+	NULL,					// pfnClientDisconnect
+	NULL,					// pfnClientKill
+	NULL,					// pfnClientPutInServer
+	NULL,					// pfnClientCommand
+	NULL,					// pfnClientUserInfoChanged
+	NULL,					// pfnServerActivate
+	NULL,					// pfnServerDeactivate
+	NULL,					// pfnPlayerPreThink
+	NULL,					// pfnPlayerPostThink
+	NULL,					// pfnStartFrame
+	NULL,					// pfnParmsNewLevel
+	NULL,					// pfnParmsChangeLevel
+	NULL,					// pfnGetGameDescription
+	NULL,					// pfnPlayerCustomization
+	NULL,					// pfnSpectatorConnect
+	NULL,					// pfnSpectatorDisconnect
+	NULL,					// pfnSpectatorThink
+	NULL,					// pfnSys_Error
+	NULL,					// pfnPM_Move
+	NULL,					// pfnPM_Init
+	NULL,					// pfnPM_FindTextureType
+	NULL,					// pfnSetupVisibility
+	NULL,					// pfnUpdateClientData
+	NULL,					// pfnAddToFullPack
+	NULL,					// pfnCreateBaseline
+	NULL,					// pfnRegisterEncoders
+	NULL,					// pfnGetWeaponData
+	NULL,					// pfnCmdStart
+	NULL,					// pfnCmdEnd
+	NULL,					// pfnConnectionlessPacket
+	NULL,					// pfnGetHullBounds
+	NULL,					// pfnCreateInstancedBaselines
+	NULL,					// pfnInconsistentFile
+	NULL,					// pfnAllowLagCompensation
 };
 
 DLL_FUNCTIONS g_DllFunctionTable_Post =
@@ -91,6 +145,24 @@ DLL_FUNCTIONS g_DllFunctionTable_Post =
 	NULL,					// pfnCreateInstancedBaselines
 	NULL,					// pfnInconsistentFile
 	NULL,					// pfnAllowLagCompensation
+};
+
+NEW_DLL_FUNCTIONS g_NewDllFunctionTable =
+{
+	NULL,					//! pfnOnFreeEntPrivateData()	Called right before the object's memory is freed.  Calls its destructor.
+	NULL,					//! pfnGameShutdown()
+	NULL,					//! pfnShouldCollide()
+	NULL,					//! pfnCvarValue()
+	NULL,					//! pfnCvarValue2()
+};
+
+NEW_DLL_FUNCTIONS g_NewDllFunctionTable_Post =
+{
+	NULL,					//! pfnOnFreeEntPrivateData()	Called right before the object's memory is freed.  Calls its destructor.
+	NULL,					//! pfnGameShutdown()
+	NULL,					//! pfnShouldCollide()
+	NULL,					//! pfnCvarValue()
+	NULL,					//! pfnCvarValue2()
 };
 
 // Receive engine function table and globals from the engine.
@@ -155,6 +227,12 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 	}
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 
+	if (pGamedllFuncs) {
+		LOG_ERROR(PLID, "Meta_Attach called with null pGamedllFuncs");
+		return(FALSE);
+	}
+	gpGamedllFuncs = pGamedllFuncs;
+
 	char buffer[128];
 	std::sprintf(buffer, "\n\n#########################\n# Meta_Attach from plugin %s #\n#########################\n\n", Plugin_info.name);
 	SERVER_PRINT(buffer);
@@ -180,6 +258,23 @@ C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON reason)
 	return TRUE;
 }
 
+C_DLLEXPORT int GetEntityAPI2(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
+{
+	if (!pFunctionTable) {
+		ALERT(at_logged, "%s called with null pFunctionTable", __FUNCTION__);
+		return FALSE;
+	}
+	if (*interfaceVersion != INTERFACE_VERSION) {
+		ALERT(at_logged, "%s version mismatch; requested=%d ours=%d", __FUNCTION__, *interfaceVersion, INTERFACE_VERSION);
+		*interfaceVersion = INTERFACE_VERSION;
+		return FALSE;
+	}
+
+	memcpy(pFunctionTable, &g_DllFunctionTable, sizeof(DLL_FUNCTIONS));
+	return TRUE;
+}
+
+
 // META; called after game DLL.
 C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 {
@@ -196,5 +291,37 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 
 	memcpy(pFunctionTable, &g_DllFunctionTable_Post, sizeof(DLL_FUNCTIONS));
 
+	return TRUE;
+}
+
+C_DLLEXPORT int GetNewDLLFunctions(NEW_DLL_FUNCTIONS* pNewFunctionTable, int* interfaceVersion)
+{
+	if (!pNewFunctionTable) {
+		ALERT(at_logged, "%s called with null pNewFunctionTable", __FUNCTION__);
+		return FALSE;
+	}
+	if (*interfaceVersion != NEW_DLL_FUNCTIONS_VERSION) {
+		ALERT(at_logged, "%s version mismatch; requested=%d ours=%d", __FUNCTION__, *interfaceVersion, NEW_DLL_FUNCTIONS_VERSION);
+		*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
+		return FALSE;
+	}
+
+	memcpy(pNewFunctionTable, &g_NewDllFunctionTable, sizeof(NEW_DLL_FUNCTIONS));
+	return TRUE;
+}
+
+C_DLLEXPORT int GetNewDLLFunctions_Post(NEW_DLL_FUNCTIONS* pNewFunctionTable, int* interfaceVersion)
+{
+	if (!pNewFunctionTable) {
+		ALERT(at_logged, "%s called with null pNewFunctionTable", __FUNCTION__);
+		return FALSE;
+	}
+	if (*interfaceVersion != NEW_DLL_FUNCTIONS_VERSION) {
+		ALERT(at_logged, "%s version mismatch; requested=%d ours=%d", __FUNCTION__, *interfaceVersion, NEW_DLL_FUNCTIONS_VERSION);
+		*interfaceVersion = NEW_DLL_FUNCTIONS_VERSION;
+		return FALSE;
+	}
+
+	memcpy(pNewFunctionTable, &g_NewDllFunctionTable_Post, sizeof(NEW_DLL_FUNCTIONS));
 	return TRUE;
 }
