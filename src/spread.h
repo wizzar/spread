@@ -24,7 +24,7 @@ public:
 	float CalcSpread(CBaseEntity* pEntity, float vecSpread);
 	bool RegisterCvar();
 
-#ifdef DEBUG
+#ifdef DO_DEBUG
 	void SetupLog();
 
 	~CSpread() {
@@ -39,7 +39,7 @@ private:
 	WEAPON_SPREAD_CFG m_rgWeaponsCfg[MAX_WEAPONS] = {};
 	cvar_t* m_pDeadCenterFirstShotCvar = NULL;
 
-#ifdef DEBUG
+#ifdef DO_DEBUG
 	std::ofstream m_logFile;
 	void LogToFile(const std::string& message);
 #endif

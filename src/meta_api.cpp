@@ -95,7 +95,7 @@ DLL_FUNCTIONS g_DllFunctionTable_Post =
 
 void GameInit();
 
-#ifdef DEBUG
+#ifdef DO_DEBUG
 void ServerActivate_Post(edict_t*, int, int);
 #endif
 
@@ -199,7 +199,7 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 
 	g_DllFunctionTable_Post.pfnGameInit = GameInit;
 
-#ifdef DEBUG
+#ifdef DO_DEBUG
 	g_DllFunctionTable_Post.pfnServerActivate = ServerActivate_Post;
 #endif
 
@@ -224,7 +224,7 @@ void GameInit()
 	RETURN_META(MRES_IGNORED);
 }
 
-#ifdef DEBUG
+#ifdef DO_DEBUG
 void ServerActivate_Post(edict_t* pEdictList, int edictCount, int clientMax)
 {
 	gSpread.SetupLog();

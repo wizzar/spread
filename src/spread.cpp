@@ -5,7 +5,6 @@
 
 CSpread gSpread;
 
-#define DO_DEBUG
 
 #ifndef DO_DEBUG
 
