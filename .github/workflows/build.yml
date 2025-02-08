@@ -32,7 +32,7 @@ jobs:
     - name: Build
       run: |
           # Open makefile directory
-          cd desktop/src
+          cd src
 
           # Make linux (Without post build script)
           make
