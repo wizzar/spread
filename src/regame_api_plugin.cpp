@@ -125,7 +125,7 @@ Vector& ReGameDLL_CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3*
 	//using std::chrono::milliseconds;
 
 	//auto t1 = high_resolution_clock::now();
-	//vecSpread = gSpread.CalcSpread(pEntity, vecSpread);
+	vecSpread = gSpread.CalcSpread(pEntity, vecSpread);
 	//auto t2 = high_resolution_clock::now();
 
 	//auto ms_int = duration_cast<milliseconds>(t2 - t1);
