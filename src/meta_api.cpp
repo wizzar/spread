@@ -227,7 +227,7 @@ void GameInit()
 #ifdef DO_DEBUG
 void ServerActivate_Post(edict_t* pEdictList, int edictCount, int clientMax)
 {
-	gSpread.SetupLog();
+	//gSpread.SetupLog();
 	RETURN_META(MRES_IGNORED);
 }
 #endif

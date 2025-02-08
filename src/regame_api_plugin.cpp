@@ -84,7 +84,6 @@ bool regamedll_api_init()
 	g_ReGameHookchains = g_ReGameApi->GetHookchains();
 
 	g_ReGameHookchains->InstallGameRules()->registerHook(&InstallGameRules);
-
 	g_ReGameHookchains->CBaseEntity_FireBullets3()->registerHook(ReGameDLL_CBaseEntity_FireBullets3);
 
 	return true;
@@ -95,7 +94,6 @@ bool regamedll_api_stop()
 	if (g_pGameRules)
 	{
 		g_ReGameHookchains->InstallGameRules()->unregisterHook(InstallGameRules);
-
 		g_ReGameHookchains->CBaseEntity_FireBullets3()->unregisterHook(ReGameDLL_CBaseEntity_FireBullets3);
 	}
 
@@ -127,7 +125,7 @@ Vector& ReGameDLL_CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3*
 	//using std::chrono::milliseconds;
 
 	//auto t1 = high_resolution_clock::now();
-	vecSpread = gSpread.CalcSpread(pEntity, vecSpread);
+	//vecSpread = gSpread.CalcSpread(pEntity, vecSpread);
 	//auto t2 = high_resolution_clock::now();
 
 	//auto ms_int = duration_cast<milliseconds>(t2 - t1);
