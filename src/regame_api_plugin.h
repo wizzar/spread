@@ -1,6 +1,5 @@
 #pragma once
 
-#include "linux.h"
 #include <regamedll_api.h>
 
 //#include <vector.h>

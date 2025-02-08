@@ -1,6 +1,5 @@
 #pragma once
 
-#include "linux.h"
 #include <rehlds_api.h>
 
 extern IRehldsApi* g_RehldsApi;

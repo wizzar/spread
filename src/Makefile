@@ -26,7 +26,17 @@ METAMOD=include/metamod
 SDK=include/cssdk
 INCLUDE=-I$(SRCDIR) -I$(METAMOD) -I$(SDK)/common -I$(SDK)/dlls -I$(SDK)/engine -I$(SDK)/game_shared -I$(SDK)/pm_shared -I$(SDK)/public
 # Add the macro definitions to the build flags
-CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0 -D_stricmp=strcasecmp -D_strnicmp=strncasecmp -D_strdup=strdup -D_unlink=unlink -D_vsnprintf=vsnprintf -D_write=write -D_close=close -D_acces=access -D_vsnwprintf=vswprintf -D_snprintf=snprintf
+CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0 \
+            -D_stricmp=strcasecmp \
+            -D_strnicmp=strncasecmp \
+            -D_strdup=strdup \
+            -D_unlink=unlink \
+            -D_vsnprintf=vsnprintf \
+            -D_write=write \
+            -D_close=close \
+            -D_acces=access \
+            -D_vsnwprintf=vswprintf \
+            -D_snprintf=snprintf
 #
 # Defult: prebuild, linux32, posbuild
 default: prebuild $(BUILD_TARGET) posbuild
