@@ -16,7 +16,7 @@ name: Action Build System
 on: [push]
 env:
   CONTAINER: ubuntu:18.04
-  
+
 jobs:
   linux:
     name: Linux Build
@@ -24,12 +24,12 @@ jobs:
     steps:
 
     - uses: actions/checkout@v4
-    
+
     - name: Start Docker Container
       run: |
         docker pull $CONTAINER
         docker run --name build-container -d -v ${{github.workspace}}:/desktop $CONTAINER tail -f /dev/null
-    
+
     - name: Install Development Tools Packages
       env:
         SCRIPT: |
