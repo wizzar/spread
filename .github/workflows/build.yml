@@ -52,9 +52,6 @@ jobs:
           # Open makefile directory
           cd desktop/src
 
-          echo "Checking files in workspace..."
-          ls -la ./
-          
           # Make linux (Without post build script)
           make
 
@@ -62,7 +59,9 @@ jobs:
           mkdir -p cstrike/addons/spread
 
           echo "Checking files in workspace..."
-          ls -la ./
+          ls -laR ./Release
+          ls -laR ./config
+          ls -laR ./cstrike
 
           # Copy release file
           cp Release/spread_mm.so cstrike/addons/spread
