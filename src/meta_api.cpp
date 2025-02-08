@@ -8,6 +8,7 @@ enginefuncs_t g_engfuncs;
 globalvars_t* gpGlobals;
 meta_globals_t* gpMetaGlobals;
 mutil_funcs_t* gpMetaUtilFuncs;
+gamedll_funcs_t* gpGamedllFuncs;
 
 
 plugin_info_t Plugin_info =
@@ -157,6 +158,12 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 		return(FALSE);
 	}
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
+
+	if (!pGamedllFuncs) {
+		LOG_ERROR(PLID, "Meta_Attach called with null pGamedllFuncs");
+		return(FALSE);
+	}
+	gpGamedllFuncs = pGamedllFuncs;
 
 	char buffer[128];
 	std::sprintf(buffer, "\n\n#########################\n# Meta_Attach from plugin %s #\n#########################\n\n", Plugin_info.name);
