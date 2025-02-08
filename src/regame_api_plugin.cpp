@@ -1,6 +1,5 @@
 #include "wrapper_meta_api.h"
 #include "regame_api_plugin.h"
-#include "spread.h"
 
 IReGameApi* g_ReGameApi;
 const ReGameFuncs_t* g_ReGameFuncs;
@@ -119,18 +118,5 @@ CGameRules* InstallGameRules(IReGameHook_InstallGameRules* chain)
 
 Vector& ReGameDLL_CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3* chain, CBaseEntity* pEntity, Vector& vecSrc, Vector& vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t* pevAttacker, bool bPistol, int shared_rand)
 {
-	//using std::chrono::high_resolution_clock;
-	//using std::chrono::duration_cast;
-	//using std::chrono::duration;
-	//using std::chrono::milliseconds;
-
-	//auto t1 = high_resolution_clock::now();
-	//vecSpread = gSpread.CalcSpread(pEntity, vecSpread);
-	//auto t2 = high_resolution_clock::now();
-
-	//auto ms_int = duration_cast<milliseconds>(t2 - t1);
-	//duration<double, std::milli> ms_double = t2 - t1;
-	//LOG_CONSOLE(PLID, "TIME: %g", ms_double.count());
-
 	return chain->callNext(pEntity, vecSrc, vecDirShooting, vecSpread, flDistance, iPenetration, iBulletType, iDamage, flRangeModifier, pevAttacker, bPistol, shared_rand);
 }

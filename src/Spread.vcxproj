@@ -114,13 +114,11 @@
     <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="regame_api_plugin.cpp" />
     <ClCompile Include="rehlds_api_plugin.cpp" />
-    <ClCompile Include="spread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="meta_globals.h" />
     <ClInclude Include="regame_api_plugin.h" />
     <ClInclude Include="rehlds_api_plugin.h" />
-    <ClInclude Include="spread.h" />
     <ClInclude Include="wrapper_meta_api.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
