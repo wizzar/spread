@@ -29,26 +29,38 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-multilib g++-multilib
 
-    - name: Build
+    - name: Prepare dirs
       run: |
           # Open makefile directory
           cd src
 
-          # Make linux (Without post build script)
+          mkdir -p build/release/cstrike/addons/spread
+          mkdir -p build/debug/cstrike/addons/spread
+
+    - name: Build Release
+      run: |
+          # Make linux release
           make
 
-          # Make dlls path
-          mkdir -p cstrike/addons/spread
+          # Copy release file
+          cp Release/spread_mm.so build/release/cstrike/addons/spread
+          cp config/spread.cfg build/release/cstrike/addons/spread
+
+    - name: Build Debug
+      run: |
+
+          # Make linux debug
+          make -f MakefileDbg
 
           # Copy release file
-          cp Release/spread_mm.so cstrike/addons/spread
-          cp config/spread.cfg cstrike/addons/spread
+          cp Release/spread_mm.so build/debug/cstrike/addons/spread
+          cp config/spread.cfg build/debug/cstrike/addons/spread
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
       with:
         name: linux32
-        path: ${{github.workspace}}/src/cstrike
+        path: ${{github.workspace}}/src/build
         
   windows:
     name: Windows Build

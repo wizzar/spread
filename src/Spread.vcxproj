@@ -105,6 +105,7 @@
   <ItemGroup>
     <None Include="config\spread.cfg" />
     <None Include="Makefile" />
+    <None Include="MakefileDbg" />
     <None Include="PostBuildDebug.ps1" />
     <None Include="PostBuildRelease.ps1" />
     <None Include="spread.def" />

@@ -18,7 +18,7 @@ BUILD_EXTENSION=so
 BUILD_OBJECTS=$(BUILD_SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 BUILD_COMPILER=c++
 BUILD_LINKER=-static-libgcc -static-libstdc++
-BUILD_CCFLAGS=$(BUILD_CFLAGS) -Dlinux -D__BUILD__
+BUILD_CCFLAGS=$(BUILD_CFLAGS) -Dlinux -D__BUILD__ -DDEBUG
 #
 # Include directory
 SRCDIR=.
