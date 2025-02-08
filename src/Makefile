@@ -6,7 +6,7 @@ BUILD_DIR=Release
 #
 # System based commands
 PRE_CMD=mkdir -p $(BUILD_DIR)
-#POS_CMD=sh PostBuild.sh
+POS_CMD=sh PostBuild.sh
 CLEAN_CMD=rm -rf $(BUILD_DIR)
 #
 # Common build definitions
@@ -25,6 +25,8 @@ SRCDIR=.
 METAMOD=include/metamod
 SDK=include/cssdk
 INCLUDE=-I$(SRCDIR) -I$(METAMOD) -I$(SDK)/common -I$(SDK)/dlls -I$(SDK)/engine -I$(SDK)/game_shared -I$(SDK)/pm_shared -I$(SDK)/public
+# Add the macro definitions to the build flags
+CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0 -D_stricmp=strcasecmp -D_strnicmp=strncasecmp -D_strdup=strdup -D_unlink=unlink -D_vsnprintf=vsnprintf -D_write=write -D_close=close -D_acces=access -D_vsnwprintf=vswprintf -D_snprintf=snprintf
 #
 # Defult: prebuild, linux32, posbuild
 default: prebuild $(BUILD_TARGET) posbuild
@@ -37,14 +39,18 @@ prebuild:
 	$(PRE_CMD)
 #
 # Pos-build: Execute command
-#posbuild:
-#	$(POS_CMD)
+posbuild:
+	@if [ -f "$(POS_CMD)" ]; then \
+		$(POS_CMD); \
+	else \
+		echo "PostBuild.sh not found, skipping posbuild."; \
+	fi
 #
 # Linux target build
 $(BUILD_TARGET): $(BUILD_OBJECTS)
-	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) $(BUILD_OBJECTS) $(BUILD_LINKER) -o$(BUILD_DIR)/$(BUILD_NAME).$(BUILD_EXTENSION)
+	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) $(CXXFLAGS) $(BUILD_OBJECTS) $(BUILD_LINKER) -o$(BUILD_DIR)/$(BUILD_NAME).$(BUILD_EXTENSION)
 $(BUILD_DIR)/%.o: %.cpp
-	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) -o $@ -c $<
+	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) $(CXXFLAGS) -o $@ -c $<
 #
 # Clean
 clean:
