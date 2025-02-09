@@ -14,6 +14,8 @@
 #
 name: Action Build System
 on: [push]
+env:
+  CONTAINER: ubuntu:18.04
 
 jobs:
   linux:
@@ -23,12 +25,27 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: Install Dependencies
+    - name: Start Docker Container
       run: |
-          sudo dpkg --add-architecture i386
-          sudo apt-get update
-          sudo apt-get install -y gcc-multilib g++-multilib
+        docker pull $CONTAINER
+        docker run --name build-container -d -v ${{github.workspace}}:/desktop $CONTAINER tail -f /dev/null
 
+    - name: Install Development Tools Packages
+      env:
+        SCRIPT: |
+          # Add i386 architecture
+          dpkg --add-architecture i386
+
+          # Update repository
+          apt-get update > /dev/null
+
+          # Install
+          apt-get install -qq -y wget unzip build-essential gcc-4.8-multilib g++-4.8-multilib libgcc1:i386 libcurl4-openssl-dev:i386 zlib1g-dev:i386 libssl-dev:i386 > /dev/null     
+
+          # Update alternatives
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-4.8
+      run: docker exec build-container bash -c "$SCRIPT"
+      
     - name: Prepare dirs
       run: |
           # Open makefile directory
@@ -51,17 +68,17 @@ jobs:
 
 #          # List symbols
 #          nm -D Release/spread_mm.so
-    - name: Build Debug
-      run: |
-          # Open makefile directory
-          cd src
-
-          # Make linux debug
-          make -f MakefileDbg
-
-          # Copy release file
-          cp Release/spread_mm.so build/debug/cstrike/addons/spread
-          cp config/spread.cfg build/debug/cstrike/addons/spread
+#    - name: Build Debug
+#      run: |
+#          # Open makefile directory
+#          cd src
+#
+#          # Make linux debug
+#          make -f MakefileDbg
+#
+#          # Copy release file
+#          cp Release/spread_mm.so build/debug/cstrike/addons/spread
+#          cp config/spread.cfg build/debug/cstrike/addons/spread
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
