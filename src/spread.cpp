@@ -1,5 +1,6 @@
 #include "spread.h"
 #include "regame_api_plugin.h"
+#include "rehlds_api_plugin.h"
 #include <chrono>
 #include <ctime>
 
@@ -175,8 +176,20 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 {
 
 #ifdef DO_DEBUG
-	// Log every 10 seconds.
-	if (std::chrono::duration<double>(std::chrono::steady_clock::now() - last).count() > 30)
+
+	int numPl = 0;
+	for (int i = 1; i <= gpGlobals->maxClients; ++i)
+	{
+		edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(i);
+		
+		if (pEdict && !pEdict->free && pEdict->v.flags & FL_CLIENT)
+			numPl++;
+
+		//CBasePlayer* pPlayer = static_cast<CBasePlayer*>(pEdict->pvPrivateData);
+	}
+
+	// Log every 30 seconds.
+	if (numPl > 7 && std::chrono::duration<double>(std::chrono::steady_clock::now() - last).count() > 30)
 	{
 		auto now = std::chrono::system_clock::now();
 		std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
@@ -378,7 +391,7 @@ FORCEDINLINE bool ShouldForceDeadCenterShot(CBasePlayer* pPlayer, bool firstShot
 
 			if (pev->velocity.Length2D() < (pPlayer->m_pActiveItem->GetMaxSpeed() / 2))
 			{
-				DEBUG_CONSOLE( "[%s] (no scope) Dead center first shot!", __FUNCTION__);
+				//DEBUG_CONSOLE( "[%s] (no scope) Dead center first shot!", __FUNCTION__);
 				return true;
 			}
 
@@ -387,7 +400,7 @@ FORCEDINLINE bool ShouldForceDeadCenterShot(CBasePlayer* pPlayer, bool firstShot
 
 		if (hasActiveZoom && pev->velocity.IsZero())
 		{
-			DEBUG_CONSOLE("[%s] (scoped) Dead center first shot!", __FUNCTION__);
+			//DEBUG_CONSOLE("[%s] (scoped) Dead center first shot!", __FUNCTION__);
 			return true;
 		}
 

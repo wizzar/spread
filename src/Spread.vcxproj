@@ -67,6 +67,7 @@
       </PrecompiledHeaderFile>
       <LanguageStandard>Default</LanguageStandard>
       <ShowIncludes>false</ShowIncludes>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
