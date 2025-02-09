@@ -18,17 +18,7 @@ BUILD_EXTENSION=so
 BUILD_OBJECTS=$(BUILD_SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 BUILD_COMPILER=c++
 BUILD_LINKER=-static-libgcc -static-libstdc++
-BUILD_CCFLAGS=$(BUILD_CFLAGS) -Dlinux -D__BUILD__ -D_GLIBCXX_USE_CXX11_ABI=0 \
-            -D_stricmp=strcasecmp \
-            -D_strnicmp=strncasecmp \
-            -D_strdup=strdup \
-            -D_unlink=unlink \
-            -D_vsnprintf=vsnprintf \
-            -D_write=write \
-            -D_close=close \
-            -D_acces=access \
-            -D_vsnwprintf=vswprintf \
-            -D_snprintf=snprintf
+BUILD_CCFLAGS=$(BUILD_CFLAGS) -Dlinux -D__BUILD__ -D_GLIBCXX_USE_CXX11_ABI=0 -D_stricmp=strcasecmp -D_strnicmp=strncasecmp -D_strdup=strdup -D_unlink=unlink -D_vsnprintf=vsnprintf -D_write=write -D_close=close -D_acces=access -D_vsnwprintf=vswprintf
 #
 # Include directory
 SRCDIR=.
