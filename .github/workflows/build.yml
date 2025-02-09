@@ -57,8 +57,7 @@ jobs:
     - name: Build Release
       run: |
           # Open makefile directory
-          ls
-          cd /desktop/src
+          cd src
           ls
           # Make linux release
           make
