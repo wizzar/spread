@@ -103,6 +103,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\.github\workflows\build.yml" />
     <None Include="config\spread.cfg" />
     <None Include="Makefile" />
     <None Include="MakefileDbg" />

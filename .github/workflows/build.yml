@@ -94,23 +94,22 @@ jobs:
       run: |
         # Execute Build
         msbuild src\Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
+        msbuild src\Spread.vcxproj -property:configuration=Debug -nologo -verbosity:minimal
 
         # Make publish directory
-        mkdir -p build\release\cstrike\addons\spread
-        mkdir -p build\debug\cstrike\addons\spread
-
-        # Move released dll to publish
-        copy src\build\release\bin\*.dll build\release\cstrike\addons\spread -Recurse -Force
-        copy src\config\*.cfg build\release\cstrike\addons\spread -Recurse -Force
-
-        msbuild src\Spread.vcxproj -property:configuration=Debug -nologo -verbosity:minimal
+        mkdir -p publish\release\cstrike\addons\spread
+        mkdir -p publish\debug\cstrike\addons\spread
         dir
 
-        copy src\build\debug\bin\*.dll build\debug\cstrike\addons\spread -Recurse -Force
-        copy src\config\*.cfg build\debug\cstrike\addons\spread -Recurse -Force
+        # Move released dll to publish
+        copy src\build\release\bin\*.dll publish\release\cstrike\addons\spread -Recurse -Force
+        copy src\config\*.cfg publish\release\cstrike\addons\spread -Recurse -Force
+
+        copy src\build\debug\bin\*.dll publish\debug\cstrike\addons\spread -Recurse -Force
+        copy src\config\*.cfg publish\debug\cstrike\addons\spread -Recurse -Force
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
       with:
         name: win32
-        path: ${{github.workspace}}/cstrike
+        path: ${{github.workspace}}/publish
