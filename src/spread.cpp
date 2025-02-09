@@ -48,8 +48,6 @@ void CSpread::LogToFile(const std::string& message) {
 
 void CSpread::SetupLog()
 {
-	LOG_CONSOLE(PLID, "LOG SETUP");
-
 	auto now = std::chrono::system_clock::now();
 	std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
 	std::string nowStr(std::ctime(&now_time_t));
@@ -238,7 +236,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 	{
 		if (weaponCfg.InAir >= 0.0f)
 		{
-			DEBUG_CONSOLE("[%s] (airborne) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.InAir);
+			//DEBUG_CONSOLE("[%s] (airborne) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.InAir);
 #ifdef DO_DEBUG			
 			sc_Airborne += 1;
 #endif
@@ -249,7 +247,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 	{
 		if (ShouldForceDeadCenterShot(pPlayer, this->m_pDeadCenterFirstShotCvar->value > 0.0f))
 		{
-			DEBUG_CONSOLE("[%s] (first shot dead center) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, 0.0f);
+			//DEBUG_CONSOLE("[%s] (first shot dead center) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, 0.0f);
 #ifdef DO_DEBUG
 			sc_DeadCenter += 1;
 #endif
@@ -264,7 +262,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 			{
 				if (weaponCfg.MovingStanding >= 0.0f)
 				{
-					DEBUG_CONSOLE("[%s] (moving, standing) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.MovingStanding);
+					//DEBUG_CONSOLE("[%s] (moving, standing) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.MovingStanding);
 #ifdef DO_DEBUG
 					sc_MovingStanding += 1;
 #endif
@@ -276,7 +274,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 				// Player is ducking.
 				if (weaponCfg.MovingDucking >= 0.0f)
 				{
-					DEBUG_CONSOLE("[%s] (moving, ducking) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.MovingDucking);
+					//DEBUG_CONSOLE("[%s] (moving, ducking) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.MovingDucking);
 #ifdef DO_DEBUG
 					sc_MovingDucking += 1;
 #endif
@@ -293,7 +291,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 			{
 				if (weaponCfg.StandingStill >= 0.0f)
 				{
-					DEBUG_CONSOLE("[%s] (still, standing) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.StandingStill);
+					//DEBUG_CONSOLE("[%s] (still, standing) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.StandingStill);
 #ifdef DO_DEBUG
 					sc_StillStanding += 1;
 #endif
@@ -306,7 +304,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 				// Player is ducking.
 				if (weaponCfg.DuckingStill >= 0.0f)
 				{
-					DEBUG_CONSOLE("[%s] (still, ducking) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.DuckingStill);
+					//DEBUG_CONSOLE("[%s] (still, ducking) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.DuckingStill);
 #ifdef DO_DEBUG
 					sc_StillDucking += 1;
 #endif
@@ -325,7 +323,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 	// by previous conditions.
 	if (weaponCfg.Default >= 0.0f)
 	{
-		DEBUG_CONSOLE("[%s] (default) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.Default);
+		//DEBUG_CONSOLE("[%s] (default) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.Default);
 #ifdef DO_DEBUG
 		sc_Default += 1;
 #endif

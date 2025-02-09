@@ -96,11 +96,18 @@ jobs:
         msbuild src\Spread.vcxproj -property:configuration=Release -nologo -verbosity:minimal
 
         # Make publish directory
-        mkdir -p cstrike\addons\spread
+        mkdir -p build\release\cstrike\addons\spread
+        mkdir -p build\debug\cstrike\addons\spread
 
         # Move released dll to publish
-        copy src\build\release\bin\*.dll cstrike\addons\spread -Recurse -Force
-        copy src\config\*.cfg cstrike\addons\spread -Recurse -Force
+        copy src\build\release\bin\*.dll build\release\cstrike\addons\spread -Recurse -Force
+        copy src\config\*.cfg build\release\cstrike\addons\spread -Recurse -Force
+
+        msbuild src\Spread.vcxproj -property:configuration=Debug -nologo -verbosity:minimal
+        dir
+
+        copy src\build\debug\bin\*.dll build\debug\cstrike\addons\spread -Recurse -Force
+        copy src\config\*.cfg build\debug\cstrike\addons\spread -Recurse -Force
 
     - name: Deploy artifacts
       uses: actions/upload-artifact@v4
