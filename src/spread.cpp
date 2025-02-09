@@ -3,6 +3,12 @@
 #include <chrono>
 #include <ctime>
 
+#ifndef _WIN32
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+#endif
+
 CSpread gSpread;
 
 
@@ -176,11 +182,20 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 	{
 		auto now = std::chrono::system_clock::now();
 		std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
-		std::tm* tmPtr = std::localtime(&currentTime);
 		std::ostringstream oss;
-		oss << std::put_time(tmPtr, "%H:%M:%S");
-		LOG_FILE(oss.str());
 
+#ifdef _WIN32
+		std::tm* tmPtr = std::localtime(&currentTime);
+		oss << std::put_time(tmPtr, "%H:%M:%S");
+#else
+		std::tm tmStruct;
+		localtime_r(&currentTime, &tmStruct); 
+		oss << std::setfill('0') << std::setw(2) << tmStruct.tm_hour << ":"
+			<< std::setfill('0') << std::setw(2) << tmStruct.tm_min << ":"
+			<< std::setfill('0') << std::setw(2) << tmStruct.tm_sec;
+#endif
+
+		LOG_FILE(oss.str());
 		LOG_FILE("AIRBORNE " + std::to_string(sc_Airborne));
 		LOG_FILE("DEADCENTER " + std::to_string(sc_DeadCenter));
 		LOG_FILE("STILL STANDING " + std::to_string(sc_StillStanding));
