@@ -175,45 +175,49 @@ void CSpread::AddWeapon(int WeaponIndex, float InAir, float MovingStanding, floa
 float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 {
 
-#ifdef DO_DEBUG
-
-	int numPl = 0;
-	for (int i = 1; i <= gpGlobals->maxClients; ++i)
-	{
-		edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(i);
-		
-		if (pEdict && !pEdict->free && pEdict->v.flags & FL_CLIENT)
-			numPl++;
-
-		//CBasePlayer* pPlayer = static_cast<CBasePlayer*>(pEdict->pvPrivateData);
-	}
+#ifdef DO_DEBUG	
 
 	// Log every 30 seconds.
-	if (numPl > 7 && std::chrono::duration<double>(std::chrono::steady_clock::now() - last).count() > 30)
+	if (std::chrono::duration<double>(std::chrono::steady_clock::now() - last).count() > 30)
 	{
-		auto now = std::chrono::system_clock::now();
-		std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
-		std::ostringstream oss;
+
+		int numPl = 0;
+		for (int i = 1; i <= gpGlobals->maxClients; ++i)
+		{
+			edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(i);
+
+			if (pEdict && !pEdict->free && pEdict->v.flags & FL_CLIENT)
+				numPl++;
+
+			//CBasePlayer* pPlayer = static_cast<CBasePlayer*>(pEdict->pvPrivateData);
+		}
+
+		if (numPl >= 7)
+		{
+			auto now = std::chrono::system_clock::now();
+			std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+			std::ostringstream oss;
 
 #ifdef _WIN32
-		std::tm* tmPtr = std::localtime(&currentTime);
-		oss << std::put_time(tmPtr, "%H:%M:%S");
+			std::tm* tmPtr = std::localtime(&currentTime);
+			oss << std::put_time(tmPtr, "%H:%M:%S");
 #else
-		std::tm tmStruct;
-		localtime_r(&currentTime, &tmStruct); 
-		oss << std::setfill('0') << std::setw(2) << tmStruct.tm_hour << ":"
-			<< std::setfill('0') << std::setw(2) << tmStruct.tm_min << ":"
-			<< std::setfill('0') << std::setw(2) << tmStruct.tm_sec;
+			std::tm tmStruct;
+			localtime_r(&currentTime, &tmStruct);
+			oss << std::setfill('0') << std::setw(2) << tmStruct.tm_hour << ":"
+				<< std::setfill('0') << std::setw(2) << tmStruct.tm_min << ":"
+				<< std::setfill('0') << std::setw(2) << tmStruct.tm_sec;
 #endif
 
-		LOG_FILE(oss.str());
-		LOG_FILE("AIRBORNE " + std::to_string(sc_Airborne));
-		LOG_FILE("DEADCENTER " + std::to_string(sc_DeadCenter));
-		LOG_FILE("STILL STANDING " + std::to_string(sc_StillStanding));
-		LOG_FILE("STILL DUCKING " + std::to_string(sc_StillDucking));
-		LOG_FILE("MOVING STANDING " + std::to_string(sc_MovingStanding));
-		LOG_FILE("MOVING DUCKING " + std::to_string(sc_MovingDucking));
-		LOG_FILE("DEFAULT " + std::to_string(sc_Default));
+			LOG_FILE(oss.str());
+			LOG_FILE("AIRBORNE " + std::to_string(sc_Airborne));
+			LOG_FILE("DEADCENTER " + std::to_string(sc_DeadCenter));
+			LOG_FILE("STILL STANDING " + std::to_string(sc_StillStanding));
+			LOG_FILE("STILL DUCKING " + std::to_string(sc_StillDucking));
+			LOG_FILE("MOVING STANDING " + std::to_string(sc_MovingStanding));
+			LOG_FILE("MOVING DUCKING " + std::to_string(sc_MovingDucking));
+			LOG_FILE("DEFAULT " + std::to_string(sc_Default));
+		}
 
 		if (this->m_logFile.is_open())
 			this->m_logFile.flush();
