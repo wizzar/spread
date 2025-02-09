@@ -18,15 +18,7 @@ BUILD_EXTENSION=so
 BUILD_OBJECTS=$(BUILD_SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 BUILD_COMPILER=c++
 BUILD_LINKER=-static-libgcc -static-libstdc++
-BUILD_CCFLAGS=$(BUILD_CFLAGS) -Dlinux -D__BUILD__
-#
-# Include directory
-SRCDIR=.
-METAMOD=include/metamod
-SDK=include/cssdk
-INCLUDE=-I$(SRCDIR) -I$(METAMOD) -I$(SDK)/common -I$(SDK)/dlls -I$(SDK)/engine -I$(SDK)/game_shared -I$(SDK)/pm_shared -I$(SDK)/public
-# Add the macro definitions to the build flags
-CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0 \
+BUILD_CCFLAGS=$(BUILD_CFLAGS) -Dlinux -D__BUILD__ -D_GLIBCXX_USE_CXX11_ABI=0 \
             -D_stricmp=strcasecmp \
             -D_strnicmp=strncasecmp \
             -D_strdup=strdup \
@@ -37,6 +29,12 @@ CXXFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0 \
             -D_acces=access \
             -D_vsnwprintf=vswprintf \
             -D_snprintf=snprintf
+#
+# Include directory
+SRCDIR=.
+METAMOD=include/metamod
+SDK=include/cssdk
+INCLUDE=-I$(SRCDIR) -I$(METAMOD) -I$(SDK)/common -I$(SDK)/dlls -I$(SDK)/engine -I$(SDK)/game_shared -I$(SDK)/pm_shared -I$(SDK)/public
 #
 # Defult: prebuild, linux32, posbuild
 default: prebuild $(BUILD_TARGET) posbuild
@@ -58,9 +56,9 @@ posbuild:
 #
 # Linux target build
 $(BUILD_TARGET): $(BUILD_OBJECTS)
-	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) $(CXXFLAGS) $(BUILD_OBJECTS) $(BUILD_LINKER) -o$(BUILD_DIR)/$(BUILD_NAME).$(BUILD_EXTENSION)
+	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) $(BUILD_OBJECTS) $(BUILD_LINKER) -o$(BUILD_DIR)/$(BUILD_NAME).$(BUILD_EXTENSION)
 $(BUILD_DIR)/%.o: %.cpp
-	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) $(CXXFLAGS) -o $@ -c $<
+	$(BUILD_COMPILER) $(INCLUDE) $(BUILD_CCFLAGS) -o $@ -c $<
 #
 # Clean
 clean:
