@@ -42,6 +42,8 @@ void CSpread::LogToFile(const std::string& message) {
 
 void CSpread::SetupLog()
 {
+	LOG_CONSOLE(PLID, "LOG SETUP");
+
 	auto now = std::chrono::system_clock::now();
 	std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
 	std::string nowStr(std::ctime(&now_time_t));

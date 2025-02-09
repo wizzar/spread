@@ -2,7 +2,7 @@
 MAKEFLAGS += --warn-undefined-variables --silent
 #
 # Build directory
-BUILD_DIR=Release
+BUILD_DIR=release
 #
 # System based commands
 PRE_CMD=mkdir -p $(BUILD_DIR)
