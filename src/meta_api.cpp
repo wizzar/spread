@@ -643,8 +643,10 @@ void HookMsgBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed)
 	}
 	
 	int msgSize;
-	DEBUG_CONSOLE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), pOrigin ? std::to_string(*pOrigin) : "null", ed ? STRING(ed->v.classname) : "null");
-	DEBUG_FILE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), pOrigin ? std::to_string(*pOrigin) : "null", ed ? STRING(ed->v.classname) : "null");
+	std::string origin = pOrigin ? std::to_string(*pOrigin) : "null";
+
+	DEBUG_CONSOLE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), origin.c_str(), ed ? STRING(ed->v.classname) : "null");
+	DEBUG_FILE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), origin.c_str(), ed ? STRING(ed->v.classname) : "null");
 }
 
 void HookMsgEnd()
