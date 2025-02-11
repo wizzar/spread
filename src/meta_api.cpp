@@ -601,107 +601,107 @@ void HookClientCommand(edict_t* pEntity)
 	}
 }
 
-void HookMsgBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed)
-{
-	char buffer[19];
-
-	switch (msg_dest)
-	{
-		case MSG_BROADCAST:              // unreliable to all
-			Q_snprintf(buffer, sizeof(buffer), "MSG_BROADCAST");
-			break;
-		case MSG_ONE:                    // reliable to one (msg_entity)
-			Q_snprintf(buffer, sizeof(buffer), "MSG_ONE");
-			break;
-		case MSG_ALL:                    // reliable to all
-			Q_snprintf(buffer, sizeof(buffer), "MSG_ALL");
-			break;
-		case MSG_INIT:                   // write to the init string
-			Q_snprintf(buffer, sizeof(buffer), "MSG_INIT");
-			break;
-		case MSG_PVS:                    // Ents in PVS of org
-			Q_snprintf(buffer, sizeof(buffer), "MSG_PVS");
-			break;
-		case MSG_PAS:                    // Ents in PAS of org
-			Q_snprintf(buffer, sizeof(buffer), "MSG_PAS");
-			break;
-		case MSG_PVS_R:                  // Reliable to PVS
-			Q_snprintf(buffer, sizeof(buffer), "MSG_PVS_R");
-			break;
-		case MSG_PAS_R:                  // Reliable to PAS
-			Q_snprintf(buffer, sizeof(buffer), "MSG_PAS_R");
-			break;
-		case MSG_ONE_UNRELIABLE:         // Send to one client, but don't put in reliable stream, put in unreliable datagram ( could be dropped )
-			Q_snprintf(buffer, sizeof(buffer), "MSG_ONE_UNRELIABLE");
-			break;
-		case MSG_SPEC:                   // Sends to all spectator proxies
-			Q_snprintf(buffer, sizeof(buffer), "MSG_SPEC");
-			break;
-	default:
-		Q_snprintf(buffer, sizeof(buffer), "UNKNOWN MSG");
-		break;
-	}
-	
-	int msgSize;
-	std::string origin = pOrigin ? std::to_string(*pOrigin) : "null";
-
-	DEBUG_CONSOLE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), origin.c_str(), ed ? STRING(ed->v.classname) : "null");
-	DEBUG_FILE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), origin.c_str(), ed ? STRING(ed->v.classname) : "null");
-}
-
-void HookMsgEnd()
-{
-	DEBUG_CONSOLE("[%s] done\n", __FUNCTION__);
-	DEBUG_FILE("[%s] done\n", __FUNCTION__);
-}
-
-void HookWriteByte(int iValue)
-{
-	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
-	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
-}
-
-void HookWriteChar(int iValue)
-{
-	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
-	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
-}
-
-void HookWriteShort(int iValue)
-{
-	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
-	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
-}
-
-void HookWriteLong(int iValue)
-{
-	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
-	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
-}
-
-void HookWriteAngle(float flValue)
-{
-	DEBUG_CONSOLE("[%s] %f", __FUNCTION__, flValue);
-	DEBUG_FILE("[%s] %f", __FUNCTION__, flValue);
-}
-
-void HookWriteCoord(float flValue)
-{
-	DEBUG_CONSOLE("[%s] %f", __FUNCTION__, flValue);
-	DEBUG_FILE("[%s] %f", __FUNCTION__, flValue);
-}
-
-void HookWriteString(const char* sz)
-{
-	DEBUG_CONSOLE("[%s] %s", __FUNCTION__, sz);
-	DEBUG_FILE("[%s] %s", __FUNCTION__, sz);
-}
-
-void HookWriteEntity(int iValue)
-{
-	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
-	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
-}
+//void HookMsgBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed)
+//{
+//	char buffer[19];
+//
+//	switch (msg_dest)
+//	{
+//		case MSG_BROADCAST:              // unreliable to all
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_BROADCAST");
+//			break;
+//		case MSG_ONE:                    // reliable to one (msg_entity)
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_ONE");
+//			break;
+//		case MSG_ALL:                    // reliable to all
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_ALL");
+//			break;
+//		case MSG_INIT:                   // write to the init string
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_INIT");
+//			break;
+//		case MSG_PVS:                    // Ents in PVS of org
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_PVS");
+//			break;
+//		case MSG_PAS:                    // Ents in PAS of org
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_PAS");
+//			break;
+//		case MSG_PVS_R:                  // Reliable to PVS
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_PVS_R");
+//			break;
+//		case MSG_PAS_R:                  // Reliable to PAS
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_PAS_R");
+//			break;
+//		case MSG_ONE_UNRELIABLE:         // Send to one client, but don't put in reliable stream, put in unreliable datagram ( could be dropped )
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_ONE_UNRELIABLE");
+//			break;
+//		case MSG_SPEC:                   // Sends to all spectator proxies
+//			Q_snprintf(buffer, sizeof(buffer), "MSG_SPEC");
+//			break;
+//	default:
+//		Q_snprintf(buffer, sizeof(buffer), "UNKNOWN MSG");
+//		break;
+//	}
+//	
+//	int msgSize;
+//	std::string origin = pOrigin ? std::to_string(*pOrigin) : "null";
+//
+//	DEBUG_CONSOLE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), origin.c_str(), ed ? STRING(ed->v.classname) : "null");
+//	DEBUG_FILE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), origin.c_str(), ed ? STRING(ed->v.classname) : "null");
+//}
+//
+//void HookMsgEnd()
+//{
+//	DEBUG_CONSOLE("[%s] done\n", __FUNCTION__);
+//	DEBUG_FILE("[%s] done\n", __FUNCTION__);
+//}
+//
+//void HookWriteByte(int iValue)
+//{
+//	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
+//	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
+//}
+//
+//void HookWriteChar(int iValue)
+//{
+//	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
+//	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
+//}
+//
+//void HookWriteShort(int iValue)
+//{
+//	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
+//	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
+//}
+//
+//void HookWriteLong(int iValue)
+//{
+//	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
+//	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
+//}
+//
+//void HookWriteAngle(float flValue)
+//{
+//	DEBUG_CONSOLE("[%s] %f", __FUNCTION__, flValue);
+//	DEBUG_FILE("[%s] %f", __FUNCTION__, flValue);
+//}
+//
+//void HookWriteCoord(float flValue)
+//{
+//	DEBUG_CONSOLE("[%s] %f", __FUNCTION__, flValue);
+//	DEBUG_FILE("[%s] %f", __FUNCTION__, flValue);
+//}
+//
+//void HookWriteString(const char* sz)
+//{
+//	DEBUG_CONSOLE("[%s] %s", __FUNCTION__, sz);
+//	DEBUG_FILE("[%s] %s", __FUNCTION__, sz);
+//}
+//
+//void HookWriteEntity(int iValue)
+//{
+//	DEBUG_CONSOLE("[%s] %d", __FUNCTION__, iValue);
+//	DEBUG_FILE("[%s] %d", __FUNCTION__, iValue);
+//}
 
 #ifdef DO_DEBUG
 void ServerActivate_Post(edict_t* pEdictList, int edictCount, int clientMax)
