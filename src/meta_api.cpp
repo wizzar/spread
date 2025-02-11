@@ -48,7 +48,7 @@ void LogToFile(const char* fmt, ...)
 
 #else
 #define DEBUG_CONSOLE(...)
-#define DEBUG_FILE(msg)
+#define DEBUG_FILE(msg, ...)
 #endif
 
 enginefuncs_t g_engfuncs;
