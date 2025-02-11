@@ -113,6 +113,7 @@
     <None Include="spread.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dbg_logger.h" />
     <ClCompile Include="meta_api.cpp" />
     <ClCompile Include="regame_api_plugin.cpp" />
     <ClCompile Include="rehlds_api_plugin.cpp" />

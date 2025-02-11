@@ -8,7 +8,9 @@
 
 #ifdef DO_DEBUG
 
+#ifndef DEBUG_CONSOLE
 #define DEBUG_CONSOLE(...) LOG_CONSOLE(PLID, __VA_ARGS__)
+#endif
 
 std::ofstream logFile;
 void LogToFile(const char* fmt, ...)
@@ -56,7 +58,6 @@ globalvars_t* gpGlobals;
 meta_globals_t* gpMetaGlobals;
 mutil_funcs_t* gpMetaUtilFuncs;
 gamedll_funcs_t* gpGamedllFuncs;
-
 
 plugin_info_t Plugin_info =
 {
@@ -640,10 +641,10 @@ void HookMsgBegin(int msg_dest, int msg_type, const float* pOrigin, edict_t* ed)
 		Q_snprintf(buffer, sizeof(buffer), "UNKNOWN MSG");
 		break;
 	}
-
+	
 	int msgSize;
-	DEBUG_CONSOLE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), pOrigin ? *pOrigin : MININT, ed ? STRING(ed->v.classname) : "null");
-	DEBUG_FILE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), pOrigin ? *pOrigin : MININT, ed ? STRING(ed->v.classname) : "null");
+	DEBUG_CONSOLE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), pOrigin ? std::to_string(*pOrigin) : "null", ed ? STRING(ed->v.classname) : "null");
+	DEBUG_FILE("[%s] [msg_dest: %d (%s)] [msg_tpye: %d (%s)] [pOrigin: %f] [edict class: %s]", __FUNCTION__, msg_dest, buffer, msg_type, GET_USER_MSG_NAME(PLID, msg_type, &msgSize), pOrigin ? std::to_string(*pOrigin) : "null", ed ? STRING(ed->v.classname) : "null");
 }
 
 void HookMsgEnd()
