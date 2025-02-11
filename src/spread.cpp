@@ -172,15 +172,24 @@ void CSpread::AddWeapon(int WeaponIndex, float InAir, float MovingStanding, floa
 	};
 }
 
+void tests()
+{
+	edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
+	CBasePlayer* pPlayer = static_cast<CBasePlayer*>(pEdict->pvPrivateData);
+	g_ReGameApi->GetGameRules()->ChangePlayerTeam(pPlayer, "SPECTATOR", TRUE, TRUE);
+	
+}
+
 float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 {
 
 #ifdef DO_DEBUG	
 
+	//tests();
+
 	// Log every 30 seconds.
 	if (std::chrono::duration<double>(std::chrono::steady_clock::now() - last).count() > 30)
 	{
-
 		int numPl = 0;
 		for (int i = 1; i <= gpGlobals->maxClients; ++i)
 		{
@@ -188,8 +197,6 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 
 			if (pEdict && !pEdict->free && pEdict->v.flags & FL_CLIENT)
 				numPl++;
-
-			//CBasePlayer* pPlayer = static_cast<CBasePlayer*>(pEdict->pvPrivateData);
 		}
 
 		if (numPl >= 7)
@@ -251,23 +258,23 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 	// Player is in the air.
 	if (IS_AIRBORNE(flags))
 	{
+#ifdef DO_DEBUG			
+		sc_Airborne += 1;
+#endif
 		if (weaponCfg.InAir >= 0.0f)
 		{
 			//DEBUG_CONSOLE("[%s] (airborne) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.InAir);
-#ifdef DO_DEBUG			
-			sc_Airborne += 1;
-#endif
 			return vecSpread * weaponCfg.InAir;
 		}
 	}
 	else
 	{
+#ifdef DO_DEBUG
+		sc_DeadCenter += 1;
+#endif
 		if (ShouldForceDeadCenterShot(pPlayer, this->m_pDeadCenterFirstShotCvar->value > 0.0f))
 		{
 			//DEBUG_CONSOLE("[%s] (first shot dead center) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, 0.0f);
-#ifdef DO_DEBUG
-			sc_DeadCenter += 1;
-#endif
 			return 0.0f;
 		}
 
@@ -277,24 +284,24 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 			// Player is standing.
 			if (IS_STANDING(flags))
 			{
+#ifdef DO_DEBUG
+				sc_MovingStanding += 1;
+#endif
 				if (weaponCfg.MovingStanding >= 0.0f)
 				{
 					//DEBUG_CONSOLE("[%s] (moving, standing) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.MovingStanding);
-#ifdef DO_DEBUG
-					sc_MovingStanding += 1;
-#endif
 					return vecSpread * weaponCfg.MovingStanding;
 				}
 			}
 			else
 			{
+#ifdef DO_DEBUG
+				sc_MovingDucking += 1;
+#endif
 				// Player is ducking.
 				if (weaponCfg.MovingDucking >= 0.0f)
 				{
 					//DEBUG_CONSOLE("[%s] (moving, ducking) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.MovingDucking);
-#ifdef DO_DEBUG
-					sc_MovingDucking += 1;
-#endif
 					return vecSpread * weaponCfg.MovingDucking;
 				}
 			}
@@ -306,25 +313,25 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 			// Player is standing.
 			if (IS_STANDING(flags))
 			{
+#ifdef DO_DEBUG
+				sc_StillStanding += 1;
+#endif
 				if (weaponCfg.StandingStill >= 0.0f)
 				{
 					//DEBUG_CONSOLE("[%s] (still, standing) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.StandingStill);
-#ifdef DO_DEBUG
-					sc_StillStanding += 1;
-#endif
 					return vecSpread * weaponCfg.StandingStill;
 				}
 
 			}
 			else
 			{
+#ifdef DO_DEBUG
+				sc_StillDucking += 1;
+#endif
 				// Player is ducking.
 				if (weaponCfg.DuckingStill >= 0.0f)
 				{
 					//DEBUG_CONSOLE("[%s] (still, ducking) [OLD SP: %f] [NEW SP: %f]", __FUNCTION__, vecSpread, vecSpread * weaponCfg.DuckingStill);
-#ifdef DO_DEBUG
-					sc_StillDucking += 1;
-#endif
 					return vecSpread * weaponCfg.DuckingStill;
 				}
 			}
