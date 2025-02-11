@@ -4,6 +4,8 @@
 #include "regame_api_plugin.h"
 #include "spread.h"
 
+// Messages: https://wiki.alliedmods.net/Half-Life_1_Game_Events
+
 #ifdef DO_DEBUG
 
 #define DEBUG_CONSOLE(...) LOG_CONSOLE(PLID, __VA_ARGS__)
