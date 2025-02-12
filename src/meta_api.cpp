@@ -3,6 +3,7 @@
 #include "rehlds_api_plugin.h"
 #include "regame_api_plugin.h"
 #include "spread.h"
+#include "dbg_logger.h"
 
 // Messages: https://wiki.alliedmods.net/Half-Life_1_Game_Events
 
@@ -12,41 +13,8 @@
 #define DEBUG_CONSOLE(...) LOG_CONSOLE(PLID, __VA_ARGS__)
 #endif
 
-std::ofstream logFile;
-void LogToFile(const char* fmt, ...)
-{
-	char buffer[1024]; // Buffer to hold the formatted string
-
-	// Initialize variable argument list
-	va_list args;
-	va_start(args, fmt);
-
-	// Format the string into buffer
-	vsnprintf(buffer, sizeof(buffer), fmt, args);
-
-	// Clean up variable argument list
-	va_end(args);
-
-
-	if (logFile.is_open())
-	{
-		logFile << std::string(buffer) << std::endl;
-		logFile.flush();
-	}
-	else
-	{
-		logFile.open("messages_log.txt", std::ios::app);
-		if (logFile.is_open())
-		{
-			logFile << std::string(buffer) << std::endl;
-			logFile.flush();
-		}
-		else
-			DEBUG_CONSOLE("ERROR OPENING MESSAGES LOG FILE");
-	}
-}
-
-#define DEBUG_FILE(msg, ...) LogToFile(msg, __VA_ARGS__);
+DbgLogger fileLogger("messages_log.txt");
+#define DEBUG_FILE(msg, ...) fileLogger.Log(msg, __VA_ARGS__);
 
 #else
 #define DEBUG_CONSOLE(...)
@@ -453,6 +421,7 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 	char buffer[128];
 	std::sprintf(buffer, "\n\n#########################\n# Meta_Attach from plugin %s #\n#########################\n\n", Plugin_info.name);
 	SERVER_PRINT(buffer);
+	DEBUG_FILE("hello dbg %d", 10);
 
 	// This is not plain metamod only.
 	// Whole nother universe here.

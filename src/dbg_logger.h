@@ -1,39 +1,80 @@
 #pragma once
 
 #include <string>
-#include <iosfwd>
-
-#ifdef DO_DEBUG
-
-using namespace std;
+#include <iostream>
+#include <fstream>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+#include <stdarg.h>
 
 class DbgLogger {
 
-public:
-	DbgLogger(string filePath)
-	{
+private:
+	std::ofstream logFile;
 
+	std::string getTimestamp() {
+		time_t now = time(nullptr);
+		std::ostringstream oss;
+		
+#ifdef _WIN32
+		tm* localTime = localtime(&now);
+		oss << std::put_time(localTime, "%H:%M:%S");
+#else
+		tm tmStruct;
+		localtime_r(&now, &tmStruct);
+		oss << std::setfill('0') << std::setw(2) << tmStruct.tm_hour << ":"
+			<< std::setfill('0') << std::setw(2) << tmStruct.tm_min << ":"
+			<< std::setfill('0') << std::setw(2) << tmStruct.tm_sec;
+#endif
+
+		return oss.str();
+	}
+
+public:
+	explicit DbgLogger(const std::string& filePath)
+	{
+		logFile.open(filePath, std::ios::app);
+		if (logFile.is_open()) {
+			Log("Log started");
+		}
+		//else {
+		//	// Handle error
+		//}
 	}
 
 	~DbgLogger()
 	{
-		/*if (logFile.is_open()) {
-			Log("Closing log");
+		if (logFile.is_open()) {
+			Log("Log closed");
 			logFile.close();
-		}*/
+		}
 	}
 
-	void Log(string message) {
-		
+	bool IsOpen() {
+		return logFile.is_open();
 	}
 
-private:
-	//ofstream logFile;
+	void Log(const std::string& message) {
+		if (logFile.is_open()) {
+			logFile << getTimestamp() << ": " << message << std::endl;
+			logFile.flush();
+		}
+	}
 
+	void Log(const char* fmt, ...) {
+		if (logFile.is_open()) {
+			
+			char buffer[2048];
+
+			va_list args;
+
+			va_start(args, fmt);
+			vsnprintf(buffer, sizeof(buffer), fmt, args);
+			va_end(args);
+
+			logFile << getTimestamp() << ": " << buffer << std::endl;
+			logFile.flush();
+		}
+	}
 };
-
-
-
-
-
-#endif // DO_DEBUG
