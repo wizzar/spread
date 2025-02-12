@@ -172,20 +172,10 @@ void CSpread::AddWeapon(int WeaponIndex, float InAir, float MovingStanding, floa
 	};
 }
 
-void tests()
-{
-	edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
-	CBasePlayer* pPlayer = static_cast<CBasePlayer*>(pEdict->pvPrivateData);
-	g_ReGameApi->GetGameRules()->ChangePlayerTeam(pPlayer, "SPECTATOR", TRUE, TRUE);
-	
-}
-
 float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 {
 
 #ifdef DO_DEBUG	
-
-	//tests();
 
 	// Log every 30 seconds.
 	if (std::chrono::duration<double>(std::chrono::steady_clock::now() - last).count() > 30)
