@@ -29,7 +29,7 @@ if (!(Test-Path($debugDLL)))
 $hldsIP = (Get-NetIPAddress -AddressFamily IPV4 -InterfaceAlias Ethernet).IPAddress;
 
 # Port
-$hldsPort = 27020
+$hldsPort = 27015
 
 # Executable parameters
 $hldsParam = "-dev -console -game cstrike -port $hldsPort -pingboost 3 -steam -master -secure -bots -timeout 3 +ip $hldsIP +map de_nuke +maxplayers 32 +sys_ticrate 1000";

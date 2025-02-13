@@ -95,10 +95,6 @@ DLL_FUNCTIONS g_DllFunctionTable_Post =
 
 void GameInit();
 
-#ifdef DO_DEBUG
-void ServerActivate_Post(edict_t*, int, int);
-#endif
-
 // Receive engine function table and globals from the engine.
 // This appears to be the _first_ DLL routine called by the engine,
 // so we do some setup operations here.
@@ -205,10 +201,6 @@ C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interface
 
 	g_DllFunctionTable_Post.pfnGameInit = GameInit;
 
-#ifdef DO_DEBUG
-	g_DllFunctionTable_Post.pfnServerActivate = ServerActivate_Post;
-#endif
-
 	memcpy(pFunctionTable, &g_DllFunctionTable_Post, sizeof(DLL_FUNCTIONS));
 
 	return TRUE;
@@ -229,11 +221,3 @@ void GameInit()
 
 	RETURN_META(MRES_IGNORED);
 }
-
-#ifdef DO_DEBUG
-void ServerActivate_Post(edict_t* pEdictList, int edictCount, int clientMax)
-{
-	gSpread.SetupLog();
-	RETURN_META(MRES_IGNORED);
-}
-#endif

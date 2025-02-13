@@ -39,36 +39,7 @@ int sc_MovingDucking = 0;
 int sc_Default = 0;
 auto last = std::chrono::steady_clock::now();
 #define DEBUG_CONSOLE(...) LOG_CONSOLE(PLID, __VA_ARGS__)
-#define LOG_FILE(msg) (this->LogToFile(msg))
-
-void CSpread::LogToFile(const std::string& message) {
-
-	if (this->m_logFile.is_open())
-		this->m_logFile << message << std::endl;
-}
-
-void CSpread::SetupLog()
-{
-	auto now = std::chrono::system_clock::now();
-	std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
-	std::string nowStr(std::ctime(&now_time_t));
-
-	if (!this->m_logFile.is_open())
-	{
-		this->m_logFile.open("cstrike/addons/spread/spread_log.txt", std::ios::app);
-
-		if (!this->m_logFile) {
-			LOG_ERROR(PLID, "ERROR OPENING SPREAD LOG FILE");
-			LOG_CONSOLE(PLID, "ERROR OPENING SPREAD LOG FILE");
-		}
-
-		LOG_FILE("Log Started - " + nowStr);
-	}
-	else
-	{
-		LOG_FILE("Server Reloaded - " + nowStr);
-	}
-}
+#define LOG_FILE(msg) (this->logger.Log(msg))
 
 #else
 
@@ -189,24 +160,8 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 				numPl++;
 		}
 
-		if (numPl >= 7)
+		if (numPl >= 1)
 		{
-			auto now = std::chrono::system_clock::now();
-			std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
-			std::ostringstream oss;
-
-#ifdef _WIN32
-			std::tm* tmPtr = std::localtime(&currentTime);
-			oss << std::put_time(tmPtr, "%H:%M:%S");
-#else
-			std::tm tmStruct;
-			localtime_r(&currentTime, &tmStruct);
-			oss << std::setfill('0') << std::setw(2) << tmStruct.tm_hour << ":"
-				<< std::setfill('0') << std::setw(2) << tmStruct.tm_min << ":"
-				<< std::setfill('0') << std::setw(2) << tmStruct.tm_sec;
-#endif
-
-			LOG_FILE(oss.str());
 			LOG_FILE("AIRBORNE " + std::to_string(sc_Airborne));
 			LOG_FILE("DEADCENTER " + std::to_string(sc_DeadCenter));
 			LOG_FILE("STILL STANDING " + std::to_string(sc_StillStanding));
@@ -215,9 +170,6 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 			LOG_FILE("MOVING DUCKING " + std::to_string(sc_MovingDucking));
 			LOG_FILE("DEFAULT " + std::to_string(sc_Default));
 		}
-
-		if (this->m_logFile.is_open())
-			this->m_logFile.flush();
 
 		last = std::chrono::steady_clock::now();
 	}

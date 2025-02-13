@@ -2,6 +2,7 @@
 
 #include "wrapper_meta_api.h"
 #include <regamedll_api.h>
+#include "dbg_logger.h"
 
 typedef struct tagWEAPON_SPREAD_CFG
 {
@@ -25,12 +26,15 @@ public:
 	bool RegisterCvar();
 
 #ifdef DO_DEBUG
-	void SetupLog();
+	DbgLogger logger;
 
-	~CSpread() {
-		if (m_logFile.is_open()) {
-			LogToFile("Closing log");
-			m_logFile.close();
+	CSpread()
+		: logger("cstrike/addons/spread/spread_log.txt")
+	{
+		if (!this->logger.IsOpen())
+		{
+			LOG_ERROR(PLID, "ERROR OPENING SPREAD LOG FILE");
+			LOG_CONSOLE(PLID, "ERROR OPENING SPREAD LOG FILE");
 		}
 	}
 #endif
@@ -38,11 +42,6 @@ public:
 private:
 	WEAPON_SPREAD_CFG m_rgWeaponsCfg[MAX_WEAPONS] = {};
 	cvar_t* m_pDeadCenterFirstShotCvar = NULL;
-
-#ifdef DO_DEBUG
-	std::ofstream m_logFile;
-	void LogToFile(const std::string& message);
-#endif
 };
 
 extern CSpread gSpread;
