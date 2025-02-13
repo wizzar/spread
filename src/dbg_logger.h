@@ -23,22 +23,6 @@ private:
 		timeinfo = localtime(&rawtime);
 		strftime(buffer, 32, "%m/%d/%Y - %H:%M:%S", timeinfo);
 
-		time_t now = time(nullptr);
-		std::ostringstream oss;
-
-		//#ifdef _WIN32
-		//		tm* localTime = localtime(&now);
-		//		oss << std::put_time(localTime, "%H:%M:%S");
-		//#else
-		//		tm tmStruct;
-		//		localtime_r(&now, &tmStruct);
-		//		oss << std::setfill('0') << std::setw(2) << tmStruct.tm_hour << ":"
-		//			<< std::setfill('0') << std::setw(2) << tmStruct.tm_min << ":"
-		//			<< std::setfill('0') << std::setw(2) << tmStruct.tm_sec;
-		//#endif
-		//
-		//		return oss.str();
-
 		return std::string(buffer);
 	}
 
