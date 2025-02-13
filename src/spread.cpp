@@ -160,7 +160,7 @@ float CSpread::CalcSpread(CBaseEntity* pEntity, float vecSpread)
 				numPl++;
 		}
 
-		if (numPl >= 1)
+		if (numPl >= 7)
 		{
 			LOG_FILE("AIRBORNE " + std::to_string(sc_Airborne));
 			LOG_FILE("DEADCENTER " + std::to_string(sc_DeadCenter));
