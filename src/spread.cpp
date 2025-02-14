@@ -4,12 +4,6 @@
 #include <chrono>
 #include <ctime>
 
-#ifndef _WIN32
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-#endif
-
 enum PLAYER_SITUATION
 {
 	STANDING_STILL,
