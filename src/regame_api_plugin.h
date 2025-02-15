@@ -18,4 +18,6 @@ extern bool meta_stop_regamedll_api();
 
 CGameRules* InstallGameRules(IReGameHook_InstallGameRules*);
 
-Vector& ReGameDLL_CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3*, CBaseEntity*, Vector&, Vector&, float, float, int, int, int, float, entvars_t*, bool, int);
+Vector& HookFireBullets3(IReGameHook_CBaseEntity_FireBullets3*, CBaseEntity*, Vector&, Vector&, float, float, int, int, int, float, entvars_t*, bool, int);
+
+void HookKickBack(IReGameHook_CBasePlayerWeapon_KickBack* chain, CBasePlayerWeapon* pEntity, float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change);

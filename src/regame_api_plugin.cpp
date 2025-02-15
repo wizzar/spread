@@ -83,8 +83,9 @@ bool regamedll_api_init()
 	g_ReGameFuncs = g_ReGameApi->GetFuncs();
 	g_ReGameHookchains = g_ReGameApi->GetHookchains();
 
-	g_ReGameHookchains->InstallGameRules()->registerHook(&InstallGameRules);
-	g_ReGameHookchains->CBaseEntity_FireBullets3()->registerHook(ReGameDLL_CBaseEntity_FireBullets3);
+	g_ReGameHookchains->InstallGameRules()->registerHook(InstallGameRules);
+	g_ReGameHookchains->CBaseEntity_FireBullets3()->registerHook(HookFireBullets3);
+	//g_ReGameHookchains->CBasePlayerWeapon_KickBack()->registerHook(HookKickBack);
 
 	return true;
 }
@@ -94,7 +95,8 @@ bool regamedll_api_stop()
 	if (g_pGameRules)
 	{
 		g_ReGameHookchains->InstallGameRules()->unregisterHook(InstallGameRules);
-		g_ReGameHookchains->CBaseEntity_FireBullets3()->unregisterHook(ReGameDLL_CBaseEntity_FireBullets3);
+		g_ReGameHookchains->CBaseEntity_FireBullets3()->unregisterHook(HookFireBullets3);
+		//g_ReGameHookchains->CBasePlayerWeapon_KickBack()->unregisterHook(HookKickBack);
 	}
 
 	return true;
@@ -117,7 +119,16 @@ CGameRules* InstallGameRules(IReGameHook_InstallGameRules* chain)
 	return gamerules;
 }
 
-Vector& ReGameDLL_CBaseEntity_FireBullets3(IReGameHook_CBaseEntity_FireBullets3* chain, CBaseEntity* pEntity, Vector& vecSrc, Vector& vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t* pevAttacker, bool bPistol, int shared_rand)
+void HookKickBack(IReGameHook_CBasePlayerWeapon_KickBack* chain, CBasePlayerWeapon* pEntity, float up_base, float lateral_base, float up_modifier, float lateral_modifier, float up_max, float lateral_max, int direction_change)
+{
+	chain->callNext(pEntity, up_base, lateral_base, up_modifier, lateral_modifier, up_max, lateral_max, direction_change);
+
+	//pEntity->pev->owner->v.punchangle.x *= 0.5;
+	//pEntity->pev->owner->v.punchangle.y *= 0.5;
+	//pEntity->pev->owner->v.punchangle.z *= 0.5;
+}
+
+Vector& HookFireBullets3(IReGameHook_CBaseEntity_FireBullets3* chain, CBaseEntity* pEntity, Vector& vecSrc, Vector& vecDirShooting, float vecSpread, float flDistance, int iPenetration, int iBulletType, int iDamage, float flRangeModifier, entvars_t* pevAttacker, bool bPistol, int shared_rand)
 {
 	//using std::chrono::high_resolution_clock;
 	//using std::chrono::duration_cast;

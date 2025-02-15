@@ -1,16 +1,17 @@
 #include "spread.h"
 #include "regame_api_plugin.h"
-#include "rehlds_api_plugin.h"
+//#include "rehlds_api_plugin.h"
 #include <chrono>
-#include <ctime>
+//#include <ctime>
 
 enum PLAYER_SITUATION
-{
-	STANDING_STILL,
-	STANDING_MOVING,
-	DUCKING_STILL,
-	DUCKING_MOVING,
-	AIRBORNE
+{						// Rough % estimates (relevant to optimize the order
+						// of the GetPlayerSituation and the switch in CalcSpread):
+	STANDING_STILL,		// 24.70%
+	STANDING_MOVING,	// 32.20%
+	DUCKING_STILL,		// 12.51%
+	DUCKING_MOVING,		//	1.41%
+	AIRBORNE			//	1.29%
 };
 
 CSpread gSpread;
