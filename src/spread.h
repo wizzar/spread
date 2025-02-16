@@ -1,19 +1,20 @@
 #pragma once
 
-#include "wrapper_meta_api.h"
-#include <regamedll_api.h>
+#include "cbase.h" // CBaseEntity;
+#include "weapons.h" // MAX_WEAPONS;
+#include "cvardef.h" // cvar_t;
 #include "dbg_logger.h"
 
 typedef struct tagWEAPON_SPREAD_CFG
 {
     bool  IsValid;
 
-    float InAir;            // Mitigation while the player is in the air.
+    float InAir;			// Mitigation while the player is in the air.
     float MovingStanding;
     float MovingDucking;
     float StandingStill;
     float DuckingStill;
-    float Default;          // Default value used when a setting is not defined or the conditions are not met. Example: player is moving above MovingOnGround speed, or player is airborne but InAir is not set, etc.
+    float Default;			// Default value used when a setting is not defined or the conditions are not met. Example: player is moving above MovingOnGround speed, or player is airborne but InAir is not set, etc.
 
 } WEAPON_SPREAD_CFG;
 

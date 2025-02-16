@@ -1,7 +1,10 @@
-#include "wrapper_meta_api.h"
-#include "interface.cpp" // needed definition for Sys_GetModuleHandle
-
-#include "rehlds_api_plugin.h"
+#include <extdll.h> // Needed by a lot of things;
+#include <meta_api.h> // To use Metamod global variable gpMetaUtilFuncs;
+#include "interface.cpp" // Definition for Sys_GetModuleHandle;
+#include <rehlds_api.h> // IRehldsApi, RehldsFuncs_t, IRehldsHookchains;
+#include "rehlds_interfaces.h" // IRehldsServerStatic, IRehldsServerData;
+#include "IMessageManager.h" // IMessageManager;
+#include "rehlds_api_plugin.h" // Define externs for rehlds.
 
 IRehldsApi* g_RehldsApi;
 const RehldsFuncs_t* g_RehldsFuncs;
@@ -13,7 +16,7 @@ IMessageManager* g_RehldsMessageManager;
 // Available in "ReHLDS API" >= 3.14.
 void rehlds_message_mngr_init();
 
-bool rehlds_api_init(CSysModule* engineModule)
+static bool rehlds_api_init(CSysModule* engineModule)
 {
 	if (!engineModule) {
 		gpMetaUtilFuncs->pfnLogConsole(PLID, "Failed to locate engine module\n");
@@ -115,7 +118,9 @@ void rehlds_message_mngr_init()
 
 bool meta_init_rehlds_api()
 {
+
 #ifdef _WIN32
+
 	// Find the most appropriate module handle from a list of DLL candidates
 	// Notes:
 	// - "swds.dll" is the library Dedicated Server
@@ -132,7 +137,9 @@ bool meta_init_rehlds_api()
 	}
 
 #else
+
 	CSysModule* engineModule = Sys_GetModuleHandle("engine_i486.so");
+
 #endif
 
 	if (!rehlds_api_init(engineModule)) {

@@ -1,13 +1,17 @@
-#include "wrapper_meta_api.h"
-#include "regame_api_plugin.h"
-#include "spread.h"
+#include <extdll.h> // Needed by a lot of things;
+#include <meta_api.h> // To use Metamod global variable gpMetaUtilFuncs;
+#include "regamedll_api.h" // IReGameApi, ReGameFuncs_t, IReGameHookchains;
+#include "gamerules.h" // CGameRules;
+#include "regame_api_plugin.h"// Declaration of extern global vars;
+#include "spread.h" // This plugin;
+#include "vector.h" // Vector;
 
 IReGameApi* g_ReGameApi;
 const ReGameFuncs_t* g_ReGameFuncs;
 IReGameHookchains* g_ReGameHookchains;
 CGameRules* g_pGameRules = nullptr;
 
-bool regamedll_api_init()
+static bool regamedll_api_init()
 {
 	const char* szGameDLLModule = gpMetaUtilFuncs->pfnGetGameInfo(PLID, GINFO_DLL_FULLPATH);
 	if (!szGameDLLModule)
@@ -90,7 +94,7 @@ bool regamedll_api_init()
 	return true;
 }
 
-bool regamedll_api_stop()
+static bool regamedll_api_stop()
 {
 	if (g_pGameRules)
 	{

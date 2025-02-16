@@ -1,9 +1,11 @@
 #pragma once
 
-#include <regamedll_api.h>
-
-//#include <vector.h>
-//#include <progdefs.h>
+#include "regamedll_api.h" // IReGameApi, ReGameFuncs_t, IReGameHookchains;
+#include "gamerules.h" // Declaration of CGameRules;
+#include "vector.h" // Vector;
+#include "cbase.h" // CBaseEntity;
+#include "weapons.h" // CBasePlayerWeapon;
+#include "progdefs.h" // entvars_t;
 
 // Make them extern here so that if
 // they are needed elsewhere then
@@ -13,8 +15,8 @@ extern const ReGameFuncs_t* g_ReGameFuncs;
 extern IReGameHookchains* g_ReGameHookchains;
 extern CGameRules* g_pGameRules;
 
-extern bool meta_init_regamedll_api();
-extern bool meta_stop_regamedll_api();
+bool meta_init_regamedll_api();
+bool meta_stop_regamedll_api();
 
 CGameRules* InstallGameRules(IReGameHook_InstallGameRules*);
 

@@ -1,8 +1,12 @@
+#include <chrono>
+#include <extdll.h> // Needed by meta_api;
+#include <meta_api.h> // Need access to global variables;
 #include "spread.h"
 #include "regame_api_plugin.h"
-//#include "rehlds_api_plugin.h"
-#include <chrono>
-//#include <ctime>
+#include "progdefs.h" // entvars_t;
+#include "player.h" // CBasePlayer;
+#include "cbase.h" // CBaseEntity;
+#include "qstring.h" // gpGlobals;
 
 enum PLAYER_SITUATION
 {						// Rough % estimates (relevant to optimize the order

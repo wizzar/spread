@@ -1,14 +1,24 @@
-#include "wrapper_meta_api.h"
-#include "meta_globals.h"
-#include "rehlds_api_plugin.h"
-#include "regame_api_plugin.h"
-#include "spread.h"
+#include <extdll.h> // Needed by a lot of things;
+#include "extdef.h" // C_DLLEXPORT;
+#include "eiface.h" // enginefuncs_t;
+#include "progdefs.h" // globalvars_t;
+#include "mutil.h" // mutil_funcs_t;
 
-enginefuncs_t g_engfuncs;
-globalvars_t* gpGlobals;
-meta_globals_t* gpMetaGlobals;
-mutil_funcs_t* gpMetaUtilFuncs;
-gamedll_funcs_t* gpGamedllFuncs;
+#include <meta_api.h> // To define Metamod global variables (gpMetaGlobals, gpMetaUtilFuncs, gpGamedllFuncs);
+#include "plinfo.h" // plugin_info_t;
+#include "rehlds_api_plugin.h" // ReHLDS setup;
+#include "regame_api_plugin.h" // ReGame_DLL setup;
+#include "spread.h" // This plugin;
+#include "enginecallbacks.h" // Define g_engfuncs; SERVER_PRINT;
+
+#include <minwindef.h> // WINAPI;
+#include <cstring> // memcpy;
+
+enginefuncs_t g_engfuncs; // Definition expected by enginecallback.h
+globalvars_t* gpGlobals;  // Definition expected by qstring.h
+meta_globals_t* gpMetaGlobals; // Definition expected by meta_api.h
+mutil_funcs_t* gpMetaUtilFuncs; // Definition expected by meta_api.h
+gamedll_funcs_t* gpGamedllFuncs; // Definition expected by meta_api.h
 
 plugin_info_t Plugin_info =
 {
@@ -142,27 +152,23 @@ C_DLLEXPORT int Meta_Attach(PLUG_LOADTIME now, META_FUNCTIONS *pFunctionTable, m
 {
 	// Store global vars from metamod.
 	if (!pMGlobals) {
-		LOG_ERROR(PLID, "Meta_Attach called with null pMGlobals");
+		LOG_ERROR(PLID, "Meta_Attach called with null pMGlobals\n");
 		return(FALSE);
 	}
 	gpMetaGlobals = pMGlobals;
 
 	// Give metamod function tables this plugin catches.
 	if (!pFunctionTable) {
-		LOG_ERROR(PLID, "Meta_Attach called with null pFunctionTable");
+		LOG_ERROR(PLID, "Meta_Attach called with null pFunctionTable\n");
 		return(FALSE);
 	}
 	memcpy(pFunctionTable, &gMetaFunctionTable, sizeof(META_FUNCTIONS));
 
 	if (!pGamedllFuncs) {
-		LOG_ERROR(PLID, "Meta_Attach called with null pGamedllFuncs");
+		LOG_ERROR(PLID, "Meta_Attach called with null pGamedllFuncs\n");
 		return(FALSE);
 	}
 	gpGamedllFuncs = pGamedllFuncs;
-
-	char buffer[128];
-	std::sprintf(buffer, "\n\n#########################\n# Meta_Attach from plugin %s #\n#########################\n\n", Plugin_info.name);
-	SERVER_PRINT(buffer);
 
 	// This is not plain metamod only.
 	// Whole nother universe here.
@@ -189,12 +195,12 @@ C_DLLEXPORT int Meta_Detach(PLUG_LOADTIME now, PL_UNLOAD_REASON reason)
 C_DLLEXPORT int GetEntityAPI2_Post(DLL_FUNCTIONS* pFunctionTable, int* interfaceVersion)
 {
 	if (!pFunctionTable) {
-		ALERT(at_logged, "%s called with null pFunctionTable", __FUNCTION__);
+		LOG_ERROR(PLID, "%s called with null pFunctionTable\n", __FUNCTION__);
 		return FALSE;
 	}
 
 	if (*interfaceVersion != INTERFACE_VERSION) {
-		ALERT(at_logged, "%s version mismatch; requested=%d ours=%d", __FUNCTION__, *interfaceVersion, INTERFACE_VERSION);
+		LOG_ERROR(PLID, "%s version mismatch; Expected: %d. Found: %d\n", __FUNCTION__, *interfaceVersion, INTERFACE_VERSION);
 		*interfaceVersion = INTERFACE_VERSION;
 		return FALSE;
 	}
