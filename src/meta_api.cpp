@@ -11,7 +11,10 @@
 #include "spread.h" // This plugin;
 #include "enginecallbacks.h" // Define g_engfuncs; SERVER_PRINT;
 
+#ifdef _WIN32
 #include <minwindef.h> // WINAPI;
+#endif
+
 #include <cstring> // memcpy;
 
 enginefuncs_t g_engfuncs; // Definition expected by enginecallback.h
